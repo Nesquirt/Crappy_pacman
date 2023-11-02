@@ -4,14 +4,14 @@ public class Pacman {
     private int direction;
     private boolean isMoving;
     private int speed;
-    private MazeTemplate mazeTemplate; // riferimento a MazeTemplate
+    private MazeTemplate mazeTemplate; // Riferimento a MazeTemplate
 
     public Pacman(int startX, int startY, MazeTemplate mazeTemplate) {
         x = startX;
         y = startY;
-        direction = 3;
-        isMoving = false;
-        speed = 10;
+        direction = 3; // Inizialmente guardando a destra
+        isMoving = false; // Inizialmente fermo
+        speed = 10; // Velocità di movimento
         this.mazeTemplate = mazeTemplate; // Inizializza il riferimento a MazeTemplate
     }
 
@@ -42,12 +42,12 @@ public class Pacman {
         int cellY = y / mazeTemplate.CELL;
 
         if (cellX >= 0 && cellX < mazeTemplate.getColumnCount() && cellY >= 0 && cellY < mazeTemplate.getRowCount()) {
-            return mazeTemplate.getMazeData()[cellY][cellX] != 'x';
+            char cellType = mazeTemplate.getMazeData()[cellY][cellX];
+            return cellType != 'x' && cellType != 'v' && cellType != 'h' && cellType != '1' && cellType != '2' && cellType != '3' && cellType != '4';
         }
 
         return false;
     }
-
 
     public void setDirection(int newDirection) {
         if (newDirection >= 0 && newDirection <= 3) {
@@ -76,7 +76,7 @@ public class Pacman {
     }
 
     public void stopMoving() {
-        isMoving = false;
+        isMoving = true;
     }
 
     public void handleInput(Input input) {
@@ -93,7 +93,7 @@ public class Pacman {
             setDirection(3); // Destra
             startMoving();
         } else {
-            //stopMoving(); // Fermo
+            stopMoving(); // Fermo
         }
     }
 }
