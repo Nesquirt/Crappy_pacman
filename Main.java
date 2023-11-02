@@ -14,8 +14,8 @@ public class Main {
             Input input = new Input();
 
 
-            // Crea un'istanza di Gui e aggiungi il labirinto, Pac-Man e l'input
-            Gui gui = new Gui(pacman, input, mazeTemplate);
+            // Crea un'istanza di Gui e aggiungi il labirinto, Pac-Man,l'input e aggiungi la possibilità di cambiare la dimensione di pacman
+            Gui gui = new Gui(pacman, input, mazeTemplate, 20);
 
             // Crea una finestra JFrame per visualizzare il gioco
             JFrame frame = new JFrame("Pac-Man Game");
