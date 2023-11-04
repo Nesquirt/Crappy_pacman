@@ -97,20 +97,16 @@ public class MazeTemplate {
         }
     }
 
-    //Disegna angoli di 3pixel
+    // Modifica il metodo drawCorner
     private void drawCorner(Graphics g, int xBase, int yBase) {
-        Graphics2D g2 = (Graphics2D) g;
-        Rectangle oldClip = g.getClipBounds();
+        int halfCell = CELL / 2;
+        int x = xBase + halfCell;
+        int y = yBase + halfCell;
 
-        g2.setClip(xBase, yBase, CELL, CELL);
-        g2.setColor(Color.BLUE);
-
-        Shape oval = new Ellipse2D.Double(xBase, yBase, CELL, CELL);
-
-        g2.setStroke(new BasicStroke(3));
-        g2.draw(oval);
-        g2.setClip(oldClip);
+        g.setColor(Color.BLUE);
+        g.fillOval(x - 3, y - 3, 6, 6);
     }
+
 
     public char[][] getMazeData() {
         return mazeData;
