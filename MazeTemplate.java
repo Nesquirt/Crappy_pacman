@@ -98,7 +98,7 @@ public class MazeTemplate {
     }
 
     // Modifica il metodo drawCorner
-    private void drawCorner(Graphics g, int xBase, int yBase) {
+    private void drawCorner(Graphics g, int xBase, int yBase) {   //TODO: FIXARE VISUALIZZAZIONE ANGOLI
         int halfCell = CELL / 2;
         int x = xBase + halfCell;
         int y = yBase + halfCell;
