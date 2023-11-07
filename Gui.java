@@ -71,7 +71,25 @@ public class Gui extends JPanel implements ActionListener {
         ImageIcon pacManIcon = pacManIcons.get(pacManDirection);
         if (pacManIcon != null) {
             Image pacManImage = pacManIcon.getImage();
-            g.drawImage(pacManImage, pacManX, pacManY, (int) Math.round(pacManSize), (int) Math.round(pacManSize), this);
+            int pacManSizeHalf = (int) Math.round(pacManSize) / 2;
+
+            // Calcola le coordinate per centrare Pac-Man sia orizzontalmente che verticalmente
+            int pacManXCentered = pacManX - pacManSizeHalf;
+            int pacManYCentered = pacManY - pacManSizeHalf;
+
+            if (pacManDirection == 2 || pacManDirection == 3) {
+                // Aggiusta la coordinata Y per centrare verticalmente
+                int cellY = pacManY / mazeTemplate.CELL;
+                pacManYCentered = cellY * mazeTemplate.CELL + mazeTemplate.CELL / 2 - pacManSizeHalf;
+            }
+
+            if (pacManDirection == 0 || pacManDirection == 1) {
+                // Aggiusta la coordinata X per centrare orizzontalmente
+                int cellX = pacManX / mazeTemplate.CELL;
+                pacManXCentered = cellX * mazeTemplate.CELL + mazeTemplate.CELL / 2 - pacManSizeHalf;
+            }
+
+            g.drawImage(pacManImage, pacManXCentered, pacManYCentered, (int) Math.round(pacManSize), (int) Math.round(pacManSize), this);
         }
 
         g.setColor(Color.WHITE);
@@ -80,4 +98,5 @@ public class Gui extends JPanel implements ActionListener {
         String scoreText = "Punteggio: " + df.format(pacman.getScore());
         g.drawString(scoreText, 20, getHeight() - 20);
     }
+
 }
