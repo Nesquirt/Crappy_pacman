@@ -1,8 +1,8 @@
-import java.awt.event.KeyEvent;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Timer;
-import java.util.TimerTask;
+import javax.swing.Timer;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class Pacman {
     private int x;
@@ -13,20 +13,17 @@ public class Pacman {
     private MazeTemplate mazeTemplate;
     private double pacManSize;
     private int score;
-    private boolean speedBoosted; // Indica se Pac-Man ha una velocità aumentata
-    private Timer speedBoostTimer; // Timer per il boost di velocità
+    private double speedMultiplier = 1.0; // Moltiplicatore di velocità iniziale
 
     public Pacman(int startX, int startY, MazeTemplate mazeTemplate, double pacManSize) {
         x = startX;
         y = startY;
         direction = 3; // Inizialmente guardando a destra
         isMoving = false; // Inizialmente fermo
-        speed = 12; // Velocità di movimento
-        this.mazeTemplate = mazeTemplate;
-        this.pacManSize = pacManSize;
-        score = 0;
-        speedBoosted = false;
-        speedBoostTimer = new Timer();
+        speed = 8; // Velocità di movimento
+        this.mazeTemplate = mazeTemplate; // Inizializza il riferimento a MazeTemplate
+        this.pacManSize = pacManSize; // Inizializza la dimensione di Pac-Man come double
+        score = 0; // Inizializza il punteggio a 0
     }
 
     public void move() {
@@ -35,13 +32,13 @@ public class Pacman {
             int nextY = y;
 
             if (direction == 0) {
-                nextY -= speed;
+                nextY -= speed * speedMultiplier;
             } else if (direction == 1) {
-                nextY += speed;
+                nextY += speed * speedMultiplier;
             } else if (direction == 2) {
-                nextX -= speed;
+                nextX -= speed * speedMultiplier;
             } else if (direction == 3) {
-                nextX += speed;
+                nextX += speed * speedMultiplier;
             }
 
             if (isValidMove(nextX, nextY)) {
@@ -50,8 +47,10 @@ public class Pacman {
             }
         }
 
+        // Verifica la raccolta di pellet speciali
         collectPellets(mazeTemplate.getSpecialPellets());
 
+        // Verifica la raccolta di pellet normali
         collectPellets(mazeTemplate.getPellets());
     }
 
@@ -98,21 +97,64 @@ public class Pacman {
     }
 
     public void handleInput(boolean[] keyStates) {
-        if (keyStates[0]) {
+        int currentCellX = x / mazeTemplate.CELL;
+        int currentCellY = y / mazeTemplate.CELL;
+
+        if (keyStates[0] && canMoveUp(currentCellX, currentCellY)) {
             setDirection(0); // Su
             startMoving();
-        } else if (keyStates[1]) {
+        } else if (keyStates[1] && canMoveDown(currentCellX, currentCellY)) {
             setDirection(1); // Giù
             startMoving();
-        } else if (keyStates[2]) {
+        } else if (keyStates[2] && canMoveLeft(currentCellX, currentCellY)) {
             setDirection(2); // Sinistra
             startMoving();
-        } else if (keyStates[3]) {
+        } else if (keyStates[3] && canMoveRight(currentCellX, currentCellY)) {
             setDirection(3); // Destra
             startMoving();
         } else {
             stopMoving();
         }
+    }
+
+    private boolean canMoveUp(int currentCellX, int currentCellY) {
+        if (direction != 1) {
+            if (currentCellY > 0) {
+                char cellType = mazeTemplate.getMazeData()[currentCellY - 1][currentCellX];
+                return cellType != 'x' && cellType != 'v' && cellType != 'h';
+            }
+        }
+        return false;
+    }
+
+    private boolean canMoveDown(int currentCellX, int currentCellY) {
+        if (direction != 0) {
+            if (currentCellY < mazeTemplate.getRowCount() - 1) {
+                char cellType = mazeTemplate.getMazeData()[currentCellY + 1][currentCellX];
+                return cellType != 'x' && cellType != 'v' && cellType != 'h';
+            }
+        }
+        return false;
+    }
+
+    private boolean canMoveLeft(int currentCellX, int currentCellY) {
+        if (direction != 3) {
+            if (currentCellX > 0) {
+                char cellType = mazeTemplate.getMazeData()[currentCellY][currentCellX - 1];
+                return cellType != 'x' && cellType != 'v' && cellType != 'h';
+            }
+        }
+        return false;
+    }
+
+    private boolean canMoveRight(int currentCellX, int currentCellY) {
+        if (direction != 2) {
+            if (currentCellX < mazeTemplate.getColumnCount() - 1) {
+                char cellType = mazeTemplate.getMazeData()[currentCellY][currentCellX + 1];
+                return cellType != 'x' && cellType != 'v' && cellType != 'h';
+            }
+        }
+        return false;
     }
 
     private void collectPellets(List<Pellet> pelletList) {
@@ -128,28 +170,20 @@ public class Pacman {
             if (distance < pacManSize / 2) {
                 iterator.remove();
                 score += pelletValue;
-
                 if (pellet.isSpecial()) {
-                    // Se il pellet è speciale, attiva il boost di velocità per 5 secondi
-                    activateSpeedBoost();
+                    // Pac-Man ha mangiato un pellet speciale, aumenta la velocità per 5 secondi
+                    speedMultiplier = 1.5; // Moltiplicatore di velocità temporaneo
+                    Timer timer = new Timer(5000, new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            // Ripristina la velocità normale dopo 5 secondi
+                            speedMultiplier = 1.0;
+                        }
+                    });
+                    timer.setRepeats(false);
+                    timer.start();
                 }
             }
-        }
-    }
-
-    private void activateSpeedBoost() {
-        if (!speedBoosted) {
-            speed *= 2; // Raddoppia la velocità
-            speedBoosted = true;
-
-            // Programma il timer per il ritorno alla velocità normale dopo 5 secondi
-            speedBoostTimer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    speed /= 2; // Ripristina la velocità normale
-                    speedBoosted = false;
-                }
-            }, 5000); // 5000 millisecondi (5 secondi)
         }
     }
 
