@@ -7,15 +7,13 @@ public class Main {
             MazeTemplate mazeTemplate = new MazeTemplate("level.txt");
 
             // Crea un'istanza di Pacman
-            Pacman pacman = new Pacman(50, 50, mazeTemplate);
+            Pacman pacman = new Pacman(50, 50, mazeTemplate, 20); // Passa la dimensione di Pac-Man
 
-
-            // Crea un'istanza di Input
+            // Crea un'istanza di Input per gestire l'input
             Input input = new Input();
 
-
-            // Crea un'istanza di Gui e aggiungi il labirinto, Pac-Man,l'input e aggiungi la possibilità di cambiare la dimensione di pacman
-            Gui gui = new Gui(pacman, input, mazeTemplate, 20);
+            // Crea un'istanza di Gui e aggiungi il labirinto, Pac-Man, la dimensione di Pac-Man e l'input
+            Gui gui = new Gui(pacman, mazeTemplate, 20, input);
 
             // Crea una finestra JFrame per visualizzare il gioco
             JFrame frame = new JFrame("Pac-Man Game");
@@ -27,21 +25,9 @@ public class Main {
 
             // Assicurati che il pannello abbia il focus per gestire l'input
             gui.requestFocus();
-
-            // Crea un timer per aggiornare il gioco e il pannello Gui
-            Timer timer = new Timer(100, e -> {
-                // Chiamare il metodo handleInput di Pacman per gestire l'input da tastiera
-                pacman.handleInput(input);
-
-                // Altri aggiornamenti del gioco
-                pacman.move();
-
-                // Aggiorna l'interfaccia utente con le animazioni e il punteggio
-                gui.repaint();
-            });
-            timer.start();
         });
     }
 }
+
 
 //prova per gitignore

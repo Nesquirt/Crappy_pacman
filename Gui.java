@@ -2,27 +2,42 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Gui extends JPanel implements ActionListener {
     private Pacman pacman;
-    private Input input;
-    private int score;
-    private Map<Integer, ImageIcon> pacManIcons;
     private MazeTemplate mazeTemplate;
-    private double pacManSize; // Cambiato il tipo di pacManSize a double
+    private double pacManSize;
+    private boolean[] keyStates;
+    private Map<Integer, ImageIcon> pacManIcons;
+    private Input input;
 
-    public Gui(Pacman pacman, Input input, MazeTemplate mazeTemplate, double pacManSize) {
+    public Gui(Pacman pacman, MazeTemplate mazeTemplate, double pacManSize, Input input) {
         this.pacman = pacman;
-        this.input = input;
         this.mazeTemplate = mazeTemplate;
-        this.pacManSize = pacManSize; // Inizializza la dimensione di Pac-Man come double
-        score = 0;
+        this.pacManSize = pacManSize;
+        this.keyStates = new boolean[4];
+        this.pacManIcons = new HashMap<>();
+        this.input = input;
 
         setPreferredSize(new Dimension(800, 600));
         setFocusable(true);
-        addKeyListener(input);
+        addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                input.keyPressed(e);
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                input.keyReleased(e);
+            }
+        });
+
         Timer timer = new Timer(100, this);
         timer.start();
 
@@ -35,7 +50,7 @@ public class Gui extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        pacman.handleInput(input);
+        pacman.handleInput(input.getKeyStates());
         pacman.move();
         repaint();
     }
@@ -49,18 +64,20 @@ public class Gui extends JPanel implements ActionListener {
 
         mazeTemplate.drawMaze(g);
 
-        int pacManX = (int) Math.round(pacman.getX()); // Arrotonda la posizione x
-        int pacManY = (int) Math.round(pacman.getY()); // Arrotonda la posizione y
+        int pacManX = (int) Math.round(pacman.getX());
+        int pacManY = (int) Math.round(pacman.getY());
         int pacManDirection = pacman.getDirection();
 
         ImageIcon pacManIcon = pacManIcons.get(pacManDirection);
         if (pacManIcon != null) {
             Image pacManImage = pacManIcon.getImage();
-
-            // Disegna Pac-Man con la dimensione specificata
             g.drawImage(pacManImage, pacManX, pacManY, (int) Math.round(pacManSize), (int) Math.round(pacManSize), this);
         }
+
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Arial", Font.PLAIN, 20));
+        DecimalFormat df = new DecimalFormat("00000");
+        String scoreText = "Punteggio: " + df.format(pacman.getScore());
+        g.drawString(scoreText, 20, getHeight() - 20);
     }
 }
-
-
