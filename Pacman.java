@@ -97,19 +97,16 @@ public class Pacman {
     }
 
     public void handleInput(boolean[] keyStates) {
-        int currentCellX = x / mazeTemplate.CELL;
-        int currentCellY = y / mazeTemplate.CELL;
-
-        if (keyStates[0] && canMoveUp(currentCellX, currentCellY)) {
+        if (keyStates[0] && canMoveUp()) {
             setDirection(0); // Su
             startMoving();
-        } else if (keyStates[1] && canMoveDown(currentCellX, currentCellY)) {
+        } else if (keyStates[1] && canMoveDown()) {
             setDirection(1); // Giù
             startMoving();
-        } else if (keyStates[2] && canMoveLeft(currentCellX, currentCellY)) {
+        } else if (keyStates[2] && canMoveLeft()) {
             setDirection(2); // Sinistra
             startMoving();
-        } else if (keyStates[3] && canMoveRight(currentCellX, currentCellY)) {
+        } else if (keyStates[3] && canMoveRight()) {
             setDirection(3); // Destra
             startMoving();
         } else {
@@ -117,43 +114,51 @@ public class Pacman {
         }
     }
 
-    private boolean canMoveUp(int currentCellX, int currentCellY) {
-        if (direction != 1) {
-            if (currentCellY > 0) {
-                char cellType = mazeTemplate.getMazeData()[currentCellY - 1][currentCellX];
-                return cellType != 'x' && cellType != 'v' && cellType != 'h';
-            }
+    private boolean canMoveUp() {
+        int cellX = x / mazeTemplate.CELL;
+        int cellY = y / mazeTemplate.CELL;
+
+        if (cellY > 0) {
+            char cellType = mazeTemplate.getMazeData()[cellY - 1][cellX];
+            return cellType != 'x' && cellType != 'v';
         }
+
         return false;
     }
 
-    private boolean canMoveDown(int currentCellX, int currentCellY) {
-        if (direction != 0) {
-            if (currentCellY < mazeTemplate.getRowCount() - 1) {
-                char cellType = mazeTemplate.getMazeData()[currentCellY + 1][currentCellX];
-                return cellType != 'x' && cellType != 'v' && cellType != 'h';
-            }
+    private boolean canMoveDown() {
+        int cellX = x / mazeTemplate.CELL;
+        int cellY = y / mazeTemplate.CELL;
+
+        if (cellY < mazeTemplate.getRowCount() - 1) {
+            char cellType = mazeTemplate.getMazeData()[cellY + 1][cellX];
+            return cellType != 'x' && cellType != 'v';
         }
+
         return false;
     }
 
-    private boolean canMoveLeft(int currentCellX, int currentCellY) {
-        if (direction != 3) {
-            if (currentCellX > 0) {
-                char cellType = mazeTemplate.getMazeData()[currentCellY][currentCellX - 1];
-                return cellType != 'x' && cellType != 'v' && cellType != 'h';
-            }
+    private boolean canMoveLeft() {
+        int cellX = x / mazeTemplate.CELL;
+        int cellY = y / mazeTemplate.CELL;
+
+        if (cellX > 0) {
+            char cellType = mazeTemplate.getMazeData()[cellY][cellX - 1];
+            return cellType != 'x' && cellType != 'h';
         }
+
         return false;
     }
 
-    private boolean canMoveRight(int currentCellX, int currentCellY) {
-        if (direction != 2) {
-            if (currentCellX < mazeTemplate.getColumnCount() - 1) {
-                char cellType = mazeTemplate.getMazeData()[currentCellY][currentCellX + 1];
-                return cellType != 'x' && cellType != 'v' && cellType != 'h';
-            }
+    private boolean canMoveRight() {
+        int cellX = x / mazeTemplate.CELL;
+        int cellY = y / mazeTemplate.CELL;
+
+        if (cellX < mazeTemplate.getColumnCount() - 1) {
+            char cellType = mazeTemplate.getMazeData()[cellY][cellX + 1];
+            return cellType != 'x' && cellType != 'h';
         }
+
         return false;
     }
 
