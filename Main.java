@@ -30,5 +30,11 @@ public class Main {
 }
 
 
-//prova per gitignore
-//prova 2 gitignore
+//TODO:Vittoria se mangiati tutti i pallet
+//TODO:Aggiungere fantasmi con relative animazioni
+//TODO:Gestire logica fantasmi(Seguono pacman in diversi modi,scappano)
+//TODO:Perdere vite se i fantasmi ti toccano, rinizia il livello con una vita in meno ma lascia i pallets mangiati as they as
+//TODO:Schermata di vittoria se si mangiano tutti i pallet, schermata di sconfitta se si perdono tutte le vite
+//TODO:fare un menù
+//TODO:Fare leaderboard aggiornata in automatico
+//TODO:Aggiungere suono
