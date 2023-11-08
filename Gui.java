@@ -100,3 +100,8 @@ public class Gui extends JPanel implements ActionListener {
     }
 
 }
+
+
+//TODO: aggiungere visibilità timer
+//TODO: cambiare dimensioni finestra
+//TODO: Aggiungere vite e relative icone
