@@ -15,6 +15,7 @@ public class Gui extends JPanel implements ActionListener {
     private boolean[] keyStates;
     private Map<Integer, ImageIcon> pacManIcons;
     private Input input;
+    private int timeElapsed; // Tempo trascorso in secondi
 
     public Gui(Pacman pacman, MazeTemplate mazeTemplate, double pacManSize, Input input) {
         this.pacman = pacman;
@@ -23,8 +24,9 @@ public class Gui extends JPanel implements ActionListener {
         this.keyStates = new boolean[4];
         this.pacManIcons = new HashMap<>();
         this.input = input;
+        this.timeElapsed = 0; // Inizializza il tempo trascorso a 0
 
-        setPreferredSize(new Dimension(800, 600));
+        setPreferredSize(new Dimension(920, 500));
         setFocusable(true);
         addKeyListener(new KeyAdapter() {
             @Override
@@ -46,6 +48,16 @@ public class Gui extends JPanel implements ActionListener {
         pacManIcons.put(1, new ImageIcon("images/down.gif"));
         pacManIcons.put(2, new ImageIcon("images/left.gif"));
         pacManIcons.put(3, new ImageIcon("images/right.gif"));
+
+        // Aggiungi un timer per aumentare il tempo
+        Timer timeTimer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                timeElapsed++;
+                repaint(); // Aggiorna il disegno del timer
+            }
+        });
+        timeTimer.start();
     }
 
     @Override
@@ -96,12 +108,10 @@ public class Gui extends JPanel implements ActionListener {
         g.setFont(new Font("Arial", Font.PLAIN, 20));
         DecimalFormat df = new DecimalFormat("00000");
         String scoreText = "Punteggio: " + df.format(pacman.getScore());
-        g.drawString(scoreText, 20, getHeight() - 20);
+        g.drawString(scoreText, 20, getHeight() - 40); // Sposta il punteggio più in alto
+        String timeText = "Tempo: " + timeElapsed + " s";
+        g.drawString(timeText, 20, getHeight() - 20);
     }
-
 }
 
-
-//TODO: aggiungere visibilità timer
-//TODO: cambiare dimensioni finestra
 //TODO: Aggiungere vite e relative icone
