@@ -22,6 +22,7 @@ public class Main {
             frame.pack();
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
+            frame.setResizable(false);
 
             // Assicurati che il pannello abbia il focus per gestire l'input
             gui.requestFocus();

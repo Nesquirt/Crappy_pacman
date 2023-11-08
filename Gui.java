@@ -26,7 +26,7 @@ public class Gui extends JPanel implements ActionListener {
         this.input = input;
         this.timeElapsed = 0; // Inizializza il tempo trascorso a 0
 
-        setPreferredSize(new Dimension(920, 500));
+        setPreferredSize(new Dimension(920, 460));
         setFocusable(true);
         addKeyListener(new KeyAdapter() {
             @Override
@@ -108,9 +108,9 @@ public class Gui extends JPanel implements ActionListener {
         g.setFont(new Font("Arial", Font.PLAIN, 20));
         DecimalFormat df = new DecimalFormat("00000");
         String scoreText = "Punteggio: " + df.format(pacman.getScore());
-        g.drawString(scoreText, 20, getHeight() - 40); // Sposta il punteggio più in alto
+        g.drawString(scoreText, 20, 440);//getHeight() - 40); // Sposta il punteggio più in alto
         String timeText = "Tempo: " + timeElapsed + " s";
-        g.drawString(timeText, 20, getHeight() - 20);
+        g.drawString(timeText, 190, 440); //getHeight() - 40);
     }
 }
 
