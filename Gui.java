@@ -1,3 +1,4 @@
+// Classe Gui
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -15,7 +16,7 @@ public class Gui extends JPanel implements ActionListener {
     private boolean[] keyStates;
     private Map<Integer, ImageIcon> pacManIcons;
     private Input input;
-    private int timeElapsed; // Tempo trascorso in secondi
+    private int timeElapsed;
 
     public Gui(Pacman pacman, MazeTemplate mazeTemplate, double pacManSize, Input input) {
         this.pacman = pacman;
@@ -24,7 +25,7 @@ public class Gui extends JPanel implements ActionListener {
         this.keyStates = new boolean[4];
         this.pacManIcons = new HashMap<>();
         this.input = input;
-        this.timeElapsed = 0; // Inizializza il tempo trascorso a 0
+        this.timeElapsed = 0;
 
         setPreferredSize(new Dimension(920, 460));
         setFocusable(true);
@@ -49,12 +50,11 @@ public class Gui extends JPanel implements ActionListener {
         pacManIcons.put(2, new ImageIcon("images/left.gif"));
         pacManIcons.put(3, new ImageIcon("images/right.gif"));
 
-        // Aggiungi un timer per aumentare il tempo
         Timer timeTimer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 timeElapsed++;
-                repaint(); // Aggiorna il disegno del timer
+                repaint();
             }
         });
         timeTimer.start();
@@ -65,6 +65,12 @@ public class Gui extends JPanel implements ActionListener {
         pacman.handleInput(input.getKeyStates());
         pacman.move();
         repaint();
+
+        if (pacman.isGameOver()) {
+            System.out.println("Hai vinto!");
+            // Puoi fare ulteriori azioni qui in caso di vittoria
+            // Ad esempio, visualizzare un messaggio di vittoria o eseguire altre operazioni
+        }
     }
 
     @Override
@@ -85,18 +91,15 @@ public class Gui extends JPanel implements ActionListener {
             Image pacManImage = pacManIcon.getImage();
             int pacManSizeHalf = (int) Math.round(pacManSize) / 2;
 
-            // Calcola le coordinate per centrare Pac-Man sia orizzontalmente che verticalmente
             int pacManXCentered = pacManX - pacManSizeHalf;
             int pacManYCentered = pacManY - pacManSizeHalf;
 
             if (pacManDirection == 2 || pacManDirection == 3) {
-                // Aggiusta la coordinata Y per centrare verticalmente
                 int cellY = pacManY / mazeTemplate.CELL;
                 pacManYCentered = cellY * mazeTemplate.CELL + mazeTemplate.CELL / 2 - pacManSizeHalf;
             }
 
             if (pacManDirection == 0 || pacManDirection == 1) {
-                // Aggiusta la coordinata X per centrare orizzontalmente
                 int cellX = pacManX / mazeTemplate.CELL;
                 pacManXCentered = cellX * mazeTemplate.CELL + mazeTemplate.CELL / 2 - pacManSizeHalf;
             }
@@ -108,9 +111,9 @@ public class Gui extends JPanel implements ActionListener {
         g.setFont(new Font("Arial", Font.PLAIN, 20));
         DecimalFormat df = new DecimalFormat("00000");
         String scoreText = "Punteggio: " + df.format(pacman.getScore());
-        g.drawString(scoreText, 20, 440);//getHeight() - 40); // Sposta il punteggio più in alto
+        g.drawString(scoreText, 20, getHeight() - 20);
         String timeText = "Tempo: " + timeElapsed + " s";
-        g.drawString(timeText, 190, 440); //getHeight() - 40);
+        g.drawString(timeText, 190, getHeight() - 20);
     }
 }
 
