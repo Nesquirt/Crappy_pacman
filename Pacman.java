@@ -1,4 +1,3 @@
-// Classe Pacman
 import java.util.List;
 import java.util.ListIterator;
 import javax.swing.Timer;
@@ -14,19 +13,22 @@ public class Pacman {
     private MazeTemplate mazeTemplate;
     private double pacManSize;
     private int score;
-    private double speedMultiplier = 1.0;
+    private double speedMultiplier = 1.0; // Moltiplicatore di velocità iniziale
+    private int lives;
+    private static final int MAX_LIVES = 3;
     private boolean isGameOver;
 
     public Pacman(int startX, int startY, MazeTemplate mazeTemplate, double pacManSize) {
         x = startX;
         y = startY;
-        direction = 3;
-        isMoving = false;
-        speed = 8;
-        this.mazeTemplate = mazeTemplate;
-        this.pacManSize = pacManSize;
-        score = 0;
-        isGameOver = false;
+        direction = 3; // Inizialmente guardando a destra
+        isMoving = false; // Inizialmente fermo
+        speed = 8; // Velocità di movimento
+        this.mazeTemplate = mazeTemplate; // Inizializza il riferimento a MazeTemplate
+        this.pacManSize = pacManSize; // Inizializza la dimensione di Pac-Man come double
+        score = 0; // Inizializza il punteggio a 0
+        lives = MAX_LIVES; // Inizializza le vite al massimo
+        isGameOver = false; // Inizializza il flag del game over a false
     }
 
     public void move() {
@@ -49,11 +51,26 @@ public class Pacman {
                 y = nextY;
             }
 
+            // Verifica la raccolta di pellet speciali
             collectPellets(mazeTemplate.getSpecialPellets());
+
+            // Verifica la raccolta di pellet normali
             collectPellets(mazeTemplate.getPellets());
 
+            // Controlla se tutti i pellet sono stati mangiati
             if (mazeTemplate.getPellets().isEmpty() && mazeTemplate.getSpecialPellets().isEmpty()) {
-                isGameOver = true;
+                if (lives > 0) {
+                    // Ripristina la posizione iniziale
+                    x = 50;
+                    y = 50;
+                    isMoving = false;
+                    lives--;
+
+                    // Puoi anche fare altre azioni in caso di perdita di una vita
+                } else {
+                    // Game over
+                    isGameOver = true;
+                }
             }
         }
     }
@@ -102,16 +119,16 @@ public class Pacman {
 
     public void handleInput(boolean[] keyStates) {
         if (keyStates[0] && canMoveUp()) {
-            setDirection(0);
+            setDirection(0); // Su
             startMoving();
         } else if (keyStates[1] && canMoveDown()) {
-            setDirection(1);
+            setDirection(1); // Giù
             startMoving();
         } else if (keyStates[2] && canMoveLeft()) {
-            setDirection(2);
+            setDirection(2); // Sinistra
             startMoving();
         } else if (keyStates[3] && canMoveRight()) {
-            setDirection(3);
+            setDirection(3); // Destra
             startMoving();
         } else {
             stopMoving();
@@ -180,10 +197,12 @@ public class Pacman {
                 iterator.remove();
                 score += pelletValue;
                 if (pellet.isSpecial()) {
-                    speedMultiplier = 1.5;
+                    // Pac-Man ha mangiato un pellet speciale, aumenta la velocità per 5 secondi
+                    speedMultiplier = 1.5; // Moltiplicatore di velocità temporaneo
                     Timer timer = new Timer(5000, new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
+                            // Ripristina la velocità normale dopo 5 secondi
                             speedMultiplier = 1.0;
                         }
                     });
@@ -196,6 +215,10 @@ public class Pacman {
 
     public int getScore() {
         return score;
+    }
+
+    public int getLives() {
+        return lives;
     }
 
     public boolean isGameOver() {

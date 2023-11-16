@@ -17,6 +17,8 @@ public class Gui extends JPanel implements ActionListener {
     private Map<Integer, ImageIcon> pacManIcons;
     private Input input;
     private int timeElapsed;
+    private ImageIcon heartIcon;
+    private int heartSize;
 
     public Gui(Pacman pacman, MazeTemplate mazeTemplate, double pacManSize, Input input) {
         this.pacman = pacman;
@@ -49,6 +51,8 @@ public class Gui extends JPanel implements ActionListener {
         pacManIcons.put(1, new ImageIcon("images/down.gif"));
         pacManIcons.put(2, new ImageIcon("images/left.gif"));
         pacManIcons.put(3, new ImageIcon("images/right.gif"));
+        heartIcon = new ImageIcon("images/heart.png");
+        heartSize = 30;
 
         Timer timeTimer = new Timer(1000, new ActionListener() {
             @Override
@@ -114,6 +118,9 @@ public class Gui extends JPanel implements ActionListener {
         g.drawString(scoreText, 20, getHeight() - 20);
         String timeText = "Tempo: " + timeElapsed + " s";
         g.drawString(timeText, 190, getHeight() - 20);
+        for (int i = 0; i < pacman.getLives(); i++) {
+            g.drawImage(heartIcon.getImage(), 320 + i * (heartSize + 5), getHeight() - 40, heartSize, heartSize, this);
+        }
     }
 }
 
