@@ -1,4 +1,3 @@
-// Classe Gui
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -7,6 +6,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.text.DecimalFormat;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Gui extends JPanel implements ActionListener {
@@ -15,21 +15,25 @@ public class Gui extends JPanel implements ActionListener {
     private double pacManSize;
     private boolean[] keyStates;
     private Map<Integer, ImageIcon> pacManIcons;
+    private Map<String, ImageIcon> ghostIcons;
     private Input input;
     private int timeElapsed;
     private ImageIcon heartIcon;
     private int heartSize;
     private boolean gameWon;
+    private List<Ghost> ghosts;
 
-    public Gui(Pacman pacman, MazeTemplate mazeTemplate, double pacManSize, Input input) {
+    public Gui(Pacman pacman, MazeTemplate mazeTemplate, double pacManSize, Input input, List<Ghost> ghosts) {
         this.pacman = pacman;
         this.mazeTemplate = mazeTemplate;
         this.pacManSize = pacManSize;
         this.keyStates = new boolean[4];
-        this.pacManIcons = new HashMap<>();
+        this.pacManIcons = loadPacManIcons();
+        this.ghostIcons = loadGhostIcons();
         this.input = input;
         this.timeElapsed = 0;
         this.gameWon = false;
+        this.ghosts = ghosts;
 
         setPreferredSize(new Dimension(920, 460));
         setFocusable(true);
@@ -48,14 +52,6 @@ public class Gui extends JPanel implements ActionListener {
         Timer timer = new Timer(100, this);
         timer.start();
 
-        pacManIcons = new HashMap<>();
-        pacManIcons.put(0, new ImageIcon("images/up.gif"));
-        pacManIcons.put(1, new ImageIcon("images/down.gif"));
-        pacManIcons.put(2, new ImageIcon("images/left.gif"));
-        pacManIcons.put(3, new ImageIcon("images/right.gif"));
-        heartIcon = new ImageIcon("images/heart.png");
-        heartSize = 30;
-
         Timer timeTimer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -66,32 +62,31 @@ public class Gui extends JPanel implements ActionListener {
         timeTimer.start();
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (!gameWon) {
-            pacman.handleInput(input.getKeyStates());
-            pacman.move();
-            repaint();
+    private Map<Integer, ImageIcon> loadPacManIcons() {
+        Map<Integer, ImageIcon> icons = new HashMap<>();
+        icons.put(0, new ImageIcon("images/up.gif"));
+        icons.put(1, new ImageIcon("images/down.gif"));
+        icons.put(2, new ImageIcon("images/left.gif"));
+        icons.put(3, new ImageIcon("images/right.gif"));
+        return icons;
+    }
 
-            if (pacman.isGameOver()) {
-                System.out.println("Hai perso!");
-                // Puoi fare ulteriori azioni qui in caso di sconfitta
-                // Ad esempio, visualizzare un messaggio di sconfitta o eseguire altre operazioni
-            } else if (pacman.isGameWon()) {
-                gameWon = true;
-            }
-        }
+    private Map<String, ImageIcon> loadGhostIcons() {
+        Map<String, ImageIcon> icons = new HashMap<>();
+        icons.put("Inky", new ImageIcon("images/inky.gif"));
+        icons.put("Blinky", new ImageIcon("images/blinky.gif"));
+        icons.put("Pinky", new ImageIcon("images/pinky.gif"));
+        icons.put("Clyde", new ImageIcon("images/clyde.gif"));
+        return icons;
     }
 
     private void handleKeyPress(KeyEvent e) {
         if (gameWon) {
             if (e.getKeyCode() == KeyEvent.VK_R) {
-                // L'utente ha premuto R, resetta il gioco
                 gameWon = false;
                 pacman.resetPosition();
                 repaint();
             } else if (e.getKeyCode() == KeyEvent.VK_Q) {
-                // L'utente ha premuto Q, esci dal gioco
                 System.exit(0);
             }
         } else {
@@ -139,6 +134,19 @@ public class Gui extends JPanel implements ActionListener {
             g.drawImage(pacManImage, pacManXCentered, pacManYCentered, (int) Math.round(pacManSize), (int) Math.round(pacManSize), this);
         }
 
+        for (Ghost ghost : ghosts) {
+            String ghostName = ghost.getName();
+            ImageIcon ghostIcon = ghostIcons.get(ghostName);
+            if (ghostIcon != null) {
+                Image ghostImage = ghostIcon.getImage();
+                int ghostX = (int) Math.round(ghost.getX());
+                int ghostY = (int) Math.round(ghost.getY());
+                int ghostSize = (int) Math.round(ghost.getSize());
+
+                g.drawImage(ghostImage, ghostX, ghostY, ghostSize, ghostSize, this);
+            }
+        }
+
         g.setColor(Color.WHITE);
         g.setFont(new Font("Arial", Font.PLAIN, 20));
         DecimalFormat df = new DecimalFormat("00000");
@@ -155,9 +163,25 @@ public class Gui extends JPanel implements ActionListener {
             int messageX = getWidth() / 2 - messageWidth / 2;
             int messageY = getHeight() / 2;
             g.drawString(winMessage, messageX, messageY);
-        } else {
-            for (int i = 0; i < pacman.getLives(); i++) {
-                g.drawImage(heartIcon.getImage(), 320 + i * (heartSize + 5), getHeight() - 40, heartSize, heartSize, this);
+        }
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (!gameWon) {
+            pacman.handleInput(input.getKeyStates());
+            pacman.move();
+
+            for (Ghost ghost : ghosts) {
+                ghost.move();
+            }
+
+            repaint();
+
+            if (pacman.isGameOver()) {
+                System.out.println("Hai perso!");
+            } else if (pacman.isGameWon()) {
+                gameWon = true;
             }
         }
     }

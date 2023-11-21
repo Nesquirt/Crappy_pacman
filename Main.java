@@ -1,4 +1,6 @@
 import javax.swing.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
@@ -12,8 +14,15 @@ public class Main {
             // Crea un'istanza di Input per gestire l'input
             Input input = new Input();
 
-            // Crea un'istanza di Gui e aggiungi il labirinto, Pac-Man, la dimensione di Pac-Man e l'input
-            Gui gui = new Gui(pacman, mazeTemplate, 20, input);
+            // Crea una lista di fantasmi
+            List<Ghost> ghosts = new ArrayList<>();
+            ghosts.add(new Ghost("Inky", 100, 100, mazeTemplate, pacman, 5));
+            ghosts.add(new Ghost("Blinky", 200, 200, mazeTemplate, pacman, 5));
+            ghosts.add(new Ghost("Pinky", 300, 300, mazeTemplate, pacman, 5));
+            ghosts.add(new Ghost("Clyde", 400, 400, mazeTemplate, pacman, 5));
+
+            // Crea un'istanza di Gui e aggiungi il labirinto, Pac-Man, la dimensione di Pac-Man, l'input e la lista di fantasmi
+            Gui gui = new Gui(pacman, mazeTemplate, 20, input, ghosts);
 
             // Crea una finestra JFrame per visualizzare il gioco
             JFrame frame = new JFrame("Pac-Man Game");
@@ -29,12 +38,3 @@ public class Main {
         });
     }
 }
-
-
-//TODO:Aggiungere fantasmi con relative animazioni
-//TODO:Gestire logica fantasmi(Seguono pacman in diversi modi,scappano)
-//TODO:Perdere vite se i fantasmi ti toccano, rinizia il livello con una vita in meno ma lascia i pallets mangiati as they as
-//TODO:Schermata di vittoria se si mangiano tutti i pallet, schermata di sconfitta se si perdono tutte le vite
-//TODO:fare un menù
-//TODO:Fare leaderboard aggiornata in automatico
-//TODO:Aggiungere suono
