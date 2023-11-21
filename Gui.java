@@ -124,4 +124,3 @@ public class Gui extends JPanel implements ActionListener {
     }
 }
 
-//TODO: Aggiungere vite e relative icone
