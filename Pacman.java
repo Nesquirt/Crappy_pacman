@@ -17,6 +17,7 @@ public class Pacman {
     private int lives;
     private static final int MAX_LIVES = 3;
     private boolean isGameOver;
+    private boolean isGameWon;
 
     public Pacman(int startX, int startY, MazeTemplate mazeTemplate, double pacManSize) {
         x = startX;
@@ -29,6 +30,7 @@ public class Pacman {
         score = 0; // Inizializza il punteggio a 0
         lives = MAX_LIVES; // Inizializza le vite al massimo
         isGameOver = false; // Inizializza il flag del game over a false
+        isGameWon = false; // Inizializza il flag della vittoria a false
     }
 
     public void move() {
@@ -61,16 +63,16 @@ public class Pacman {
             if (mazeTemplate.getPellets().isEmpty() && mazeTemplate.getSpecialPellets().isEmpty()) {
                 if (lives > 0) {
                     // Ripristina la posizione iniziale
-                    x = 50;
-                    y = 50;
-                    isMoving = false;
-                    lives--;
-
-                    // Puoi anche fare altre azioni in caso di perdita di una vita
+                    resetPosition();
                 } else {
                     // Game over
                     isGameOver = true;
                 }
+            }
+
+            // Controlla se hai vinto
+            if (mazeTemplate.getPellets().isEmpty() && mazeTemplate.getSpecialPellets().isEmpty()) {
+                isGameWon = true;
             }
         }
     }
@@ -223,5 +225,16 @@ public class Pacman {
 
     public boolean isGameOver() {
         return isGameOver;
+    }
+
+    public boolean isGameWon() {
+        return isGameWon;
+    }
+
+    public void resetPosition() {
+        x = 50;
+        y = 50;
+        isMoving = false;
+        lives--;
     }
 }

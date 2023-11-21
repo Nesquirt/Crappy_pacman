@@ -19,6 +19,7 @@ public class Gui extends JPanel implements ActionListener {
     private int timeElapsed;
     private ImageIcon heartIcon;
     private int heartSize;
+    private boolean gameWon;
 
     public Gui(Pacman pacman, MazeTemplate mazeTemplate, double pacManSize, Input input) {
         this.pacman = pacman;
@@ -28,18 +29,19 @@ public class Gui extends JPanel implements ActionListener {
         this.pacManIcons = new HashMap<>();
         this.input = input;
         this.timeElapsed = 0;
+        this.gameWon = false;
 
         setPreferredSize(new Dimension(920, 460));
         setFocusable(true);
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                input.keyPressed(e);
+                handleKeyPress(e);
             }
 
             @Override
             public void keyReleased(KeyEvent e) {
-                input.keyReleased(e);
+                handleKeyRelease(e);
             }
         });
 
@@ -66,14 +68,40 @@ public class Gui extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        pacman.handleInput(input.getKeyStates());
-        pacman.move();
-        repaint();
+        if (!gameWon) {
+            pacman.handleInput(input.getKeyStates());
+            pacman.move();
+            repaint();
 
-        if (pacman.isGameOver()) {
-            System.out.println("Hai vinto!");
-            // Puoi fare ulteriori azioni qui in caso di vittoria
-            // Ad esempio, visualizzare un messaggio di vittoria o eseguire altre operazioni
+            if (pacman.isGameOver()) {
+                System.out.println("Hai perso!");
+                // Puoi fare ulteriori azioni qui in caso di sconfitta
+                // Ad esempio, visualizzare un messaggio di sconfitta o eseguire altre operazioni
+            } else if (pacman.isGameWon()) {
+                gameWon = true;
+            }
+        }
+    }
+
+    private void handleKeyPress(KeyEvent e) {
+        if (gameWon) {
+            if (e.getKeyCode() == KeyEvent.VK_R) {
+                // L'utente ha premuto R, resetta il gioco
+                gameWon = false;
+                pacman.resetPosition();
+                repaint();
+            } else if (e.getKeyCode() == KeyEvent.VK_Q) {
+                // L'utente ha premuto Q, esci dal gioco
+                System.exit(0);
+            }
+        } else {
+            input.keyPressed(e);
+        }
+    }
+
+    private void handleKeyRelease(KeyEvent e) {
+        if (!gameWon) {
+            input.keyReleased(e);
         }
     }
 
@@ -118,9 +146,19 @@ public class Gui extends JPanel implements ActionListener {
         g.drawString(scoreText, 20, getHeight() - 20);
         String timeText = "Tempo: " + timeElapsed + " s";
         g.drawString(timeText, 190, getHeight() - 20);
-        for (int i = 0; i < pacman.getLives(); i++) {
-            g.drawImage(heartIcon.getImage(), 320 + i * (heartSize + 5), getHeight() - 40, heartSize, heartSize, this);
+
+        if (gameWon) {
+            g.setColor(Color.YELLOW);
+            g.setFont(new Font("Arial", Font.BOLD, 30));
+            String winMessage = "Hai vinto! Premi R per riprovare, Q per uscire.";
+            int messageWidth = g.getFontMetrics().stringWidth(winMessage);
+            int messageX = getWidth() / 2 - messageWidth / 2;
+            int messageY = getHeight() / 2;
+            g.drawString(winMessage, messageX, messageY);
+        } else {
+            for (int i = 0; i < pacman.getLives(); i++) {
+                g.drawImage(heartIcon.getImage(), 320 + i * (heartSize + 5), getHeight() - 40, heartSize, heartSize, this);
+            }
         }
     }
 }
-
