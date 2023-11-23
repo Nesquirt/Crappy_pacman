@@ -35,4 +35,8 @@ public class Input extends KeyAdapter {
     public boolean[] getKeyStates() {
         return keyStates;
     }
+
+    public boolean isPlayerMoving() {
+        return keyStates[0] || keyStates[1] || keyStates[2] || keyStates[3];
+    }
 }

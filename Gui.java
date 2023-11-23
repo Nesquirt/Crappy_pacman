@@ -85,12 +85,20 @@ public class Gui extends JPanel implements ActionListener {
             if (e.getKeyCode() == KeyEvent.VK_R) {
                 gameWon = false;
                 pacman.resetPosition();
+                setPlayerMoving();
                 repaint();
             } else if (e.getKeyCode() == KeyEvent.VK_Q) {
                 System.exit(0);
             }
         } else {
             input.keyPressed(e);
+            setPlayerMoving();
+        }
+    }
+
+    private void setPlayerMoving() {
+        for (Ghost ghost : ghosts) {
+            ghost.setPlayerMoving(true);
         }
     }
 

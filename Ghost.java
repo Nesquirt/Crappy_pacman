@@ -1,78 +1,73 @@
-import java.awt.*;
 import java.util.Random;
 
 public class Ghost {
     private String name;
     private int x;
     private int y;
-    private int speed;
     private MazeTemplate mazeTemplate;
     private Pacman pacman;
-    private Random random;
+    private int speed;
+    private int direction;
+    private boolean playerMoving;
+    private Input input;
 
-    public Ghost(String name, int startX, int startY, MazeTemplate mazeTemplate, Pacman pacman, int speed) {
+    public Ghost(String name, MazeTemplate mazeTemplate, Pacman pacman, int speed, Input input) {
         this.name = name;
-        this.x = startX;
-        this.y = startY;
         this.mazeTemplate = mazeTemplate;
         this.pacman = pacman;
         this.speed = speed;
-        this.random = new Random();
+        this.direction = getRandomDirection();
+        this.playerMoving = false;
+        this.input = input;
+        initializePosition();
+    }
+
+    private void initializePosition() {
+        char[][] mazeData = mazeTemplate.getMazeData();
+        Random random = new Random();
+        int row, col;
+        do {
+            row = random.nextInt(mazeTemplate.getRowCount());
+            col = random.nextInt(mazeTemplate.getColumnCount());
+        } while (mazeData[row][col] != 'g');
+
+        x = col * mazeTemplate.CELL + mazeTemplate.CELL / 2;
+        y = row * mazeTemplate.CELL + mazeTemplate.CELL / 2;
+    }
+
+    private int getRandomDirection() {
+        return new Random().nextInt(4);
     }
 
     public void move() {
-        // Implementa la logica di movimento del fantasma
-        // Ad esempio, puoi farli inseguire il giocatore o muoversi in modo casuale
-
-        int nextX = x;
-        int nextY = y;
-
-        // Scegli una direzione in base alla posizione del giocatore
-        int playerX = pacman.getX();
-        int playerY = pacman.getY();
-
-        if (random.nextBoolean()) {
-            moveHorizontally(playerX);
-        } else {
-            moveVertically(playerY);
-        }
-    }
-
-    private void moveHorizontally(int playerX) {
-        // Muovi in direzione orizzontale
-        if (playerX < x && isValidMove(x - speed, y)) {
-            x -= speed;
-        } else if (playerX > x && isValidMove(x + speed, y)) {
-            x += speed;
-        }
-    }
-
-    private void moveVertically(int playerY) {
-        // Muovi in direzione verticale
-        if (playerY < y && isValidMove(x, y - speed)) {
-            y -= speed;
-        } else if (playerY > y && isValidMove(x, y + speed)) {
-            y += speed;
-        }
-    }
-
-    private boolean isValidMove(int x, int y) {
-        // Verifica se la mossa è valida
-        int cellX = x / mazeTemplate.CELL;
-        int cellY = y / mazeTemplate.CELL;
-
-        if (cellX >= 0 && cellX < mazeTemplate.getColumnCount() && cellY >= 0 && cellY < mazeTemplate.getRowCount()) {
-            char cellType = mazeTemplate.getMazeData()[cellY][cellX];
-            return cellType != 'x' && cellType != 'v' && cellType != 'h' && cellType != '1' && cellType != '2' && cellType != '3' && cellType != '4';
+        if (playerMoving && !input.isPlayerMoving()) {
+            // If the player has stopped moving, stop the ghost
+            playerMoving = false;
+            return;
         }
 
-        return false;
+        // Logic for ghost movement
+        // Implement your logic here based on the current direction and available moves
+
+        // Example: Move in a random direction
+        if (Math.random() < 0.1) {
+            direction = getRandomDirection();
+        }
+
+        // Update the ghost's position based on the current direction and speed
+        // Implement your logic here
+
+        // Example: Move horizontally
+        x += (direction % 2 == 0) ? speed * (direction - 1) : 0;
+
+        // Example: Move vertically
+        y += (direction % 2 == 1) ? speed * (direction - 2) : 0;
     }
 
-    public void draw(Graphics g) {
-        // Implementa la logica di disegno del fantasma
-        g.setColor(Color.RED); // Cambia colore a seconda del fantasma
-        g.fillOval(x - 10, y - 10, 20, 20); // Disegna un cerchio per rappresentare il fantasma
+    // Other methods and getters/setters as needed
+
+    public String getName() {
+        return name;
     }
 
     public int getX() {
@@ -83,13 +78,19 @@ public class Ghost {
         return y;
     }
 
-    public String getName() {
-        // Restituisci il nome del fantasma
-        return name;
+    public int getDirection() {
+        return direction;
     }
 
-    public int getSize() {
-        // Restituisci la dimensione del fantasma
+    public boolean isPlayerMoving() {
+        return playerMoving;
+    }
+
+    public int getSize(){
         return 20;
+    }
+
+    public void setPlayerMoving(boolean playerMoving) {
+        this.playerMoving = playerMoving;
     }
 }
