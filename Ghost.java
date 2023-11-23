@@ -23,6 +23,7 @@ public class Ghost {
     }
 
     private void initializePosition() {
+        // Inizializza la posizione del fantasma all'interno del recinto
         char[][] mazeData = mazeTemplate.getMazeData();
         Random random = new Random();
         int row, col;
@@ -36,35 +37,55 @@ public class Ghost {
     }
 
     private int getRandomDirection() {
+        // Restituisce una direzione casuale (0-3) per il movimento del fantasma
         return new Random().nextInt(4);
     }
 
     public void move() {
         if (playerMoving && !input.isPlayerMoving()) {
-            // If the player has stopped moving, stop the ghost
+            // Se il giocatore ha smesso di muoversi, ferma il fantasma
             playerMoving = false;
             return;
         }
 
-        // Logic for ghost movement
-        // Implement your logic here based on the current direction and available moves
+        // Logica per il movimento del fantasma
+        // Implementa la tua logica qui basandoti sulla direzione corrente e le mosse disponibili
 
-        // Example: Move in a random direction
+        // Esempio: Muovi in una direzione casuale
         if (Math.random() < 0.1) {
             direction = getRandomDirection();
         }
 
-        // Update the ghost's position based on the current direction and speed
-        // Implement your logic here
+        // Calcola la prossima posizione basata sulla direzione corrente e sulla velocità
+        int nextX = x + ((direction % 2 == 0) ? speed * (direction - 1) : 0);
+        int nextY = y + ((direction % 2 == 1) ? speed * (direction - 2) : 0);
 
-        // Example: Move horizontally
-        x += (direction % 2 == 0) ? speed * (direction - 1) : 0;
-
-        // Example: Move vertically
-        y += (direction % 2 == 1) ? speed * (direction - 2) : 0;
+        // Verifica se la prossima posizione è all'interno dei limiti del labirinto e non entra in collisione con le barriere del labirinto
+        if (isWithinMazeBounds(nextX, nextY) && !collidesWithMazeBarrier(nextX, nextY)) {
+            // Aggiorna la posizione del fantasma
+            x = nextX;
+            y = nextY;
+        } else {
+            // Cambia direzione se colpisce un muro
+            direction = getRandomDirection();
+        }
     }
 
-    // Other methods and getters/setters as needed
+    private boolean isWithinMazeBounds(int x, int y) {
+        // Implementa la logica per verificare se (x, y) è all'interno dei limiti del labirinto
+        return x >= 0 && x < mazeTemplate.getColumnCount() * mazeTemplate.CELL &&
+                y >= 0 && y < mazeTemplate.getRowCount() * mazeTemplate.CELL;
+    }
+
+    private boolean collidesWithMazeBarrier(int x, int y) {
+        // Implementa la logica per verificare se la posizione (x, y) entra in collisione con una barriera del labirinto
+        int cellX = x / mazeTemplate.CELL;
+        int cellY = y / mazeTemplate.CELL;
+        char cellType = mazeTemplate.getMazeData()[cellY][cellX];
+        return cellType == 'h' || cellType == 'v' || cellType == '1' || cellType == '2' || cellType == '3' || cellType == '4';
+    }
+
+    // Altri metodi e getter/setter se necessari
 
     public String getName() {
         return name;
@@ -82,12 +103,12 @@ public class Ghost {
         return direction;
     }
 
-    public boolean isPlayerMoving() {
-        return playerMoving;
+    public int getSize() {
+        return 20; // Sostituisci con la dimensione effettiva del fantasma
     }
 
-    public int getSize(){
-        return 20;
+    public boolean isPlayerMoving() {
+        return playerMoving;
     }
 
     public void setPlayerMoving(boolean playerMoving) {

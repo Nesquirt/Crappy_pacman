@@ -181,6 +181,13 @@ public class Gui extends JPanel implements ActionListener {
             pacman.move();
 
             for (Ghost ghost : ghosts) {
+                //if(ghost.name == "Inky")
+                //ghost.target.X = pacman.getX();
+                //ghost.target.Y = pacman.getY();
+                //else if(ghost.name == "Pinky")
+                //  {if(pacman.isFacing(Right)
+                //      ghost.target.X = pacman.getX() + 3
+                //      ghost.target.Y = pacman.getY()
                 ghost.move();
             }
 
