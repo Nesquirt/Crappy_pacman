@@ -24,7 +24,7 @@ public class Pacman {
         y = startY;
         direction = 3; // Inizialmente guardando a destra
         isMoving = false; // Inizialmente fermo
-        speed = 8; // Velocità di movimento
+        speed = 3; // Velocità di movimento
         this.mazeTemplate = mazeTemplate; // Inizializza il riferimento a MazeTemplate
         this.pacManSize = pacManSize; // Inizializza la dimensione di Pac-Man come double
         score = 0; // Inizializza il punteggio a 0
@@ -201,11 +201,11 @@ public class Pacman {
                 if (pellet.isSpecial()) {
                     // Pac-Man ha mangiato un pellet speciale, aumenta la velocità per 5 secondi
                     speedMultiplier = 1.5; // Moltiplicatore di velocità temporaneo
-                    Timer timer = new Timer(5000, new ActionListener() {
+                    Timer timer = new Timer(8000, new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            // Ripristina la velocità normale dopo 5 secondi
-                            speedMultiplier = 1.0;
+                            // Ripristina la velocità normale dopo 8 secondi
+                            speedMultiplier = 1.1;
                         }
                     });
                     timer.setRepeats(false);

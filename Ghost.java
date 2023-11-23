@@ -10,6 +10,7 @@ public class Ghost {
     private int direction;
     private boolean playerMoving;
     private Input input;
+    private GhostPattern ghostPattern;
 
     public Ghost(String name, MazeTemplate mazeTemplate, Pacman pacman, int speed, Input input) {
         this.name = name;
@@ -20,10 +21,10 @@ public class Ghost {
         this.playerMoving = false;
         this.input = input;
         initializePosition();
+        this.ghostPattern = new GhostPattern(this, pacman, mazeTemplate);
     }
 
     private void initializePosition() {
-        // Inizializza la posizione del fantasma all'interno del recinto
         char[][] mazeData = mazeTemplate.getMazeData();
         Random random = new Random();
         int row, col;
@@ -37,55 +38,68 @@ public class Ghost {
     }
 
     private int getRandomDirection() {
-        // Restituisce una direzione casuale (0-3) per il movimento del fantasma
         return new Random().nextInt(4);
     }
 
     public void move() {
         if (playerMoving && !input.isPlayerMoving()) {
-            // Se il giocatore ha smesso di muoversi, ferma il fantasma
             playerMoving = false;
             return;
         }
 
-        // Logica per il movimento del fantasma
-        // Implementa la tua logica qui basandoti sulla direzione corrente e le mosse disponibili
+        ghostPattern.updateDirection();
 
-        // Esempio: Muovi in una direzione casuale
-        if (Math.random() < 0.1) {
-            direction = getRandomDirection();
+        // Calcola la direzione verso cui muoversi in base alla posizione di Pacman
+        int targetDirection = calculateTargetDirection();
+
+        // Aggiorna la direzione solo se non è contraria a quella corrente
+        if (isOppositeDirection(targetDirection)) {
+            targetDirection = getRandomDirection();
         }
 
-        // Calcola la prossima posizione basata sulla direzione corrente e sulla velocità
+        direction = targetDirection;
+
         int nextX = x + ((direction % 2 == 0) ? speed * (direction - 1) : 0);
         int nextY = y + ((direction % 2 == 1) ? speed * (direction - 2) : 0);
 
-        // Verifica se la prossima posizione è all'interno dei limiti del labirinto e non entra in collisione con le barriere del labirinto
         if (isWithinMazeBounds(nextX, nextY) && !collidesWithMazeBarrier(nextX, nextY)) {
-            // Aggiorna la posizione del fantasma
             x = nextX;
             y = nextY;
         } else {
-            // Cambia direzione se colpisce un muro
             direction = getRandomDirection();
         }
     }
 
+    private boolean isOppositeDirection(int targetDirection) {
+        // Verifica se la direzione target è opposta a quella corrente
+        return (direction + 2) % 4 == targetDirection;
+    }
+
+    private int calculateTargetDirection() {
+        int pacmanX = pacman.getX();
+        int pacmanY = pacman.getY();
+
+        int dx = pacmanX - x;
+        int dy = pacmanY - y;
+
+        if (Math.abs(dx) > Math.abs(dy)) {
+            return (dx > 0) ? 3 : 2; // Right o Left
+        } else {
+            return (dy > 0) ? 1 : 0; // Down o Up
+        }
+    }
+
     private boolean isWithinMazeBounds(int x, int y) {
-        // Implementa la logica per verificare se (x, y) è all'interno dei limiti del labirinto
         return x >= 0 && x < mazeTemplate.getColumnCount() * mazeTemplate.CELL &&
                 y >= 0 && y < mazeTemplate.getRowCount() * mazeTemplate.CELL;
     }
 
     private boolean collidesWithMazeBarrier(int x, int y) {
-        // Implementa la logica per verificare se la posizione (x, y) entra in collisione con una barriera del labirinto
         int cellX = x / mazeTemplate.CELL;
         int cellY = y / mazeTemplate.CELL;
         char cellType = mazeTemplate.getMazeData()[cellY][cellX];
         return cellType == 'h' || cellType == 'v' || cellType == '1' || cellType == '2' || cellType == '3' || cellType == '4';
     }
-
-    // Altri metodi e getter/setter se necessari
 
     public String getName() {
         return name;
@@ -113,5 +127,13 @@ public class Ghost {
 
     public void setPlayerMoving(boolean playerMoving) {
         this.playerMoving = playerMoving;
+    }
+
+    public void setDirection(int newDirection) {
+        this.direction = newDirection;
+    }
+
+    public Input getInput() {
+        return input;
     }
 }
