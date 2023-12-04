@@ -140,7 +140,7 @@ public class Gui extends JPanel implements ActionListener {
             }
 
             //g.drawImage(pacManImage, pacManXCentered, pacManYCentered, (int) Math.round(pacManSize), (int) Math.round(pacManSize), this);
-            g.drawRect(pacman.getX(), pacman.getY(), (int)pacManSize, (int)pacManSize);
+            g.drawRect(pacman.getX(), pacman.getY(), (int)pacManSize, (int)pacManSize);// draw debug sqaure for pacman
         }
 
         for (Ghost ghost : ghosts) {
@@ -153,7 +153,7 @@ public class Gui extends JPanel implements ActionListener {
                 int ghostSize = (int) Math.round(ghost.getSize());
 
                 //g.drawImage(ghostImage, ghostX, ghostY, ghostSize, ghostSize, this);
-                g.drawRect(ghost.getX(), ghost.getY(), (int)ghostSize, (int)ghostSize);
+                g.drawRect(ghost.getX(), ghost.getY(), (int)ghostSize, (int)ghostSize); //draw debug square for ghost
             }
         }
 
