@@ -64,20 +64,36 @@ public class AStarPathfinding {
     }
 
     private List<Node> getNeighbors(Node node) {
-        // Restituisci i nodi vicini validi per il nodo dato
-        // Implementa la tua logica in base alla struttura del tuo labirinto
-        return Collections.emptyList(); // Modificato: sostituire con la logica reale
+        List<Node> neighbors = new ArrayList<>();
+
+        int[] dx = {0, 0, 1, -1};
+        int[] dy = {1, -1, 0, 0};
+
+        for (int i = 0; i < 4; i++) {
+            int newX = node.getX() + dx[i];
+            int newY = node.getY() + dy[i];
+
+            if (isWithinMazeBounds(newX, newY) && mazeTemplate.getMazeData()[newY][newX] != 'x') {
+                neighbors.add(new Node(newX, newY));
+            }
+        }
+
+        return neighbors;
     }
 
     private double calculateDistance(Node node1, Node node2) {
-        // Calcola la distanza tra due nodi (ad esempio, distanza euclidea)
-        // Implementa la tua logica in base alle dimensioni del tuo labirinto
-        return 0.0; // Modificato: sostituire con la logica reale
+        int dx = node1.getX() - node2.getX();
+        int dy = node1.getY() - node2.getY();
+        return Math.sqrt(dx * dx + dy * dy); // Distanza euclidea
     }
 
     private double calculateHeuristic(int currentX, int currentY, int goalX, int goalY) {
-        // Calcola la distanza euristica da un punto al goal (ad esempio, distanza euclidea)
-        // Implementa la tua logica in base alle dimensioni del tuo labirinto
-        return 0.0; // Modificato: sostituire con la logica reale
+        int dx = goalX - currentX;
+        int dy = goalY - currentY;
+        return Math.sqrt(dx * dx + dy * dy); // Distanza euclidea
+    }
+
+    private boolean isWithinMazeBounds(int x, int y) {
+        return x >= 0 && x < mazeTemplate.getColumnCount() && y >= 0 && y < mazeTemplate.getRowCount();
     }
 }

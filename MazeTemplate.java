@@ -103,12 +103,12 @@ public class MazeTemplate {
 
             case 'h': // Linee orizzontali
                 g.setColor(Color.BLUE);
-                g.fillRect(x, y + CELL / 2 - 1, CELL, 3);
+                g.fillRect(x, y + CELL / 2 , CELL, 3);
                 break;
 
             case 'v': // Linee verticali
                 g.setColor(Color.BLUE);
-                g.fillRect(x + CELL / 2 - 1, y, 3, CELL);
+                g.fillRect(x + CELL / 2 , y, 3, CELL);
                 break;
 
             case '1': // Angolo alto-dx

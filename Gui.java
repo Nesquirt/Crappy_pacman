@@ -139,7 +139,8 @@ public class Gui extends JPanel implements ActionListener {
                 pacManXCentered = cellX * mazeTemplate.CELL + mazeTemplate.CELL / 2 - pacManSizeHalf;
             }
 
-            g.drawImage(pacManImage, pacManXCentered, pacManYCentered, (int) Math.round(pacManSize), (int) Math.round(pacManSize), this);
+            //g.drawImage(pacManImage, pacManXCentered, pacManYCentered, (int) Math.round(pacManSize), (int) Math.round(pacManSize), this);
+            g.drawRect(pacman.getX(), pacman.getY(), (int)pacManSize, (int)pacManSize);
         }
 
         for (Ghost ghost : ghosts) {
@@ -151,7 +152,8 @@ public class Gui extends JPanel implements ActionListener {
                 int ghostY = (int) Math.round(ghost.getY());
                 int ghostSize = (int) Math.round(ghost.getSize());
 
-                g.drawImage(ghostImage, ghostX, ghostY, ghostSize, ghostSize, this);
+                //g.drawImage(ghostImage, ghostX, ghostY, ghostSize, ghostSize, this);
+                g.drawRect(ghost.getX(), ghost.getY(), (int)ghostSize, (int)ghostSize);
             }
         }
 

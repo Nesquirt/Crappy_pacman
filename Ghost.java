@@ -32,10 +32,10 @@ public class Ghost {
         do {
             row = random.nextInt(mazeTemplate.getRowCount());
             col = random.nextInt(mazeTemplate.getColumnCount());
-        } while (mazeData[row][col] != 'g');
+        } while (mazeData[row][col] != 'o');
 
-        x = col * mazeTemplate.CELL + mazeTemplate.CELL / 2;
-        y = row * mazeTemplate.CELL + mazeTemplate.CELL / 2;
+        x = col * mazeTemplate.CELL - mazeTemplate.CELL / 2;
+        y = row * mazeTemplate.CELL - mazeTemplate.CELL / 2;
     }
 
     private int getRandomDirection() {
@@ -44,16 +44,16 @@ public class Ghost {
     }
 
     public void move() {
-        if (playerMoving && !input.isPlayerMoving()) {
+        //if (playerMoving && !input.isPlayerMoving()) {
             // Se il giocatore ha smesso di muoversi, ferma il fantasma
-            playerMoving = false;
-            return;
-        }
+            //playerMoving = false;
+            //return;
+        //}
 
         ghostPattern.update();  // Aggiorna il comportamento del fantasma
 
         // Aggiungi una condizione per evitare movimenti eccessivi
-        if (Math.random() < 0.1) {
+        if (Math.random() < 0.2) {
             direction = getRandomDirection();
         }
 
@@ -64,8 +64,17 @@ public class Ghost {
         // Verifica se la prossima posizione è all'interno dei limiti del labirinto e non entra in collisione con le barriere del labirinto
         if (isWithinMazeBounds(nextX, nextY) && !collidesWithMazeBarrier(nextX, nextY)) {
             // Aggiorna la posizione del fantasma
+            /*for(int i = 0; i<20; i++)
+            {
+                x = nextX;
+                y = nextY;
+                nextX = x + ((direction % 2 == 0) ? speed * (direction - 1) : 0);
+                nextY = y + ((direction % 2 == 1) ? speed * (direction - 2) : 0);
+            }*/
+
             x = nextX;
             y = nextY;
+
         } else {
             // Cambia direzione se colpisce un muro
             direction = getRandomDirection();
