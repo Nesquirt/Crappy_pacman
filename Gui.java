@@ -49,7 +49,7 @@ public class Gui extends JPanel implements ActionListener {
             }
         });
 
-        Timer timer = new Timer(100, this);
+        Timer timer = new Timer(16, this);
         timer.start();
 
         Timer timeTimer = new Timer(1000, new ActionListener() {

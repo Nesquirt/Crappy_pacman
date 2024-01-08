@@ -13,7 +13,7 @@ public class Pacman {
     private MazeTemplate mazeTemplate;
     private double pacManSize;
     private int score;
-    private double speedMultiplier = 1.0; // Moltiplicatore di velocità iniziale
+    private double speedMultiplier = 0.3; // Moltiplicatore di velocità iniziale
     private int lives;
     private static final int MAX_LIVES = 3;
     private boolean isGameOver;
@@ -200,7 +200,7 @@ public class Pacman {
                 score += pelletValue;
                 if (pellet.isSpecial()) {
                     // Pac-Man ha mangiato un pellet speciale, aumenta la velocità per 5 secondi
-                    speedMultiplier = 1.5; // Moltiplicatore di velocità temporaneo
+                    speedMultiplier = 1.1; // Moltiplicatore di velocità temporaneo
                     Timer timer = new Timer(5000, new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
