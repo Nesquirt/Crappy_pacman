@@ -24,7 +24,7 @@ public class Pacman {
         y = startY;
         direction = 3; // Inizialmente guardando a destra
         isMoving = false; // Inizialmente fermo
-        speed = 8; // Velocità di movimento
+        speed = 2; // Velocità di movimento
         this.mazeTemplate = mazeTemplate; // Inizializza il riferimento a MazeTemplate
         this.pacManSize = pacManSize; // Inizializza la dimensione di Pac-Man come double
         score = 0; // Inizializza il punteggio a 0
