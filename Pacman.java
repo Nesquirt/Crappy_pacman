@@ -11,7 +11,7 @@ public class Pacman {
     private boolean isMoving;
     private int speed;
     private MazeTemplate mazeTemplate;
-    private double pacManSize;
+    public double pacManSize;
     private int score;
     private double speedMultiplier = 0.3; // Moltiplicatore di velocità iniziale
     private int lives;
@@ -51,6 +51,7 @@ public class Pacman {
             if (isValidMove(nextX, nextY)) {
                 x = nextX;
                 y = nextY;
+
             }
 
             // Verifica la raccolta di pellet speciali

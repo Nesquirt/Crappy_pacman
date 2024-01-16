@@ -16,10 +16,10 @@ public class Main {
 
             // Crea una lista di fantasmi
             List<Ghost> ghosts = new ArrayList<>();
-            ghosts.add(new Ghost("Inky", 100, 100, mazeTemplate, pacman, 5,25));
-            ghosts.add(new Ghost("Blinky", 200, 200, mazeTemplate, pacman, 5,25));
-            ghosts.add(new Ghost("Pinky", 300, 300, mazeTemplate, pacman, 5,25));
-            ghosts.add(new Ghost("Clyde", 400, 400, mazeTemplate, pacman, 5,25));
+            ghosts.add(new Ghost("Inky", 100, 100, mazeTemplate, pacman, 5,0));
+            ghosts.add(new Ghost("Blinky", 200, 200, mazeTemplate, pacman, 5,0));
+            ghosts.add(new Ghost("Pinky", 300, 300, mazeTemplate, pacman, 5,0));
+            ghosts.add(new Ghost("Clyde", 400, 400, mazeTemplate, pacman, 5,0));
 
             // Crea un'istanza di Gui e aggiungi il labirinto, Pac-Man, la dimensione di Pac-Man, l'input e la lista di fantasmi
             Gui gui = new Gui(pacman, mazeTemplate, 20, input, ghosts);

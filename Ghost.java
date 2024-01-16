@@ -17,7 +17,7 @@ public class Ghost {
     private int changeDirectionProbability; // Probabilità di cambiare direzione (in percentuale)
     private Timer moveTimer;
     private long lastMoveTime = System.currentTimeMillis();
-    private int millisecondsPerMove = 200; // Regola questo valore per cambiare la velocità
+    private int millisecondsPerMove = 16; // Regola questo valore per cambiare la velocità
 
     public Ghost(String name, int x, int y, MazeTemplate mazeTemplate, Pacman pacman, int speed, int changeDirectionProbability) {
         this.name = name;
@@ -37,7 +37,7 @@ public class Ghost {
             public void run() {
                 move();
             }
-        }, 0, 100);  // Esegui il metodo move() ogni 100 millisecondi (puoi regolare l'intervallo)
+        }, 0, 16);  // Esegui il metodo move() ogni 100 millisecondi (puoi regolare l'intervallo)
     }
 
     public int getX() {
@@ -74,8 +74,8 @@ public class Ghost {
 
         if (elapsedTime >= millisecondsPerMove) {
             moveTowardsPacman();
-            randomlyMove();
-            randomlyChangeDirection();
+            //randomlyMove();
+            //randomlyChangeDirection();
 
             lastMoveTime = currentTime;
         }
@@ -97,8 +97,8 @@ public class Ghost {
     }
 
     private void moveTowardsPacman() {
-        int targetX = pacman.getX();
-        int targetY = pacman.getY();
+        int targetX = pacman.getX()+((int)pacman.pacManSize/2) ;
+        int targetY = pacman.getY()+((int)pacman.pacManSize/2);
 
         int deltaX = targetX - getX();
         int deltaY = targetY - getY();
@@ -133,7 +133,7 @@ public class Ghost {
 
     private void moveHorizontally(int deltaX) {
         int step = Integer.compare(deltaX, 0);
-        int nextX = getX() + step * mazeTemplate.CELL;
+        int nextX = getX() + step; // * mazeTemplate.CELL;
 
         int nextY = getY();
 
@@ -145,7 +145,7 @@ public class Ghost {
 
     private void moveVertically(int deltaY) {
         int step = Integer.compare(deltaY, 0);
-        int nextY = getY() + step * mazeTemplate.CELL;
+        int nextY = getY() + step; // * mazeTemplate.CELL;
 
         int nextX = getX();
 
@@ -169,7 +169,7 @@ public class Ghost {
 
     private void randomlyChangeDirection() {
         // Aggiungi una probabilità del 5% di cambiare direzione ad ogni passo
-        if (random.nextDouble() < changeDirectionProbability / 100.0) {
+        if (random.nextDouble(100) < changeDirectionProbability / 100.0) {
             direction = random.nextInt(4);
         }
     }
