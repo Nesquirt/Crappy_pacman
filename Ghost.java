@@ -1,5 +1,4 @@
 import javax.swing.*;
-import java.awt.*;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -74,12 +73,26 @@ public class Ghost {
 
         if (elapsedTime >= millisecondsPerMove) {
             moveTowardsPacman();
-            //randomlyMove();
-            //randomlyChangeDirection();
+
+            // Se il fantasma è bloccato, ruota nella prima direzione utile
+            if (!isValidMove(calculateNextX(), calculateNextY())) {
+                blockedInABlock();
+            }
 
             lastMoveTime = currentTime;
         }
     }
+
+    private int calculateNextX() {
+        int step = Integer.compare(direction % 2, 0);
+        return getX() + step;
+    }
+
+    private int calculateNextY() {
+        int step = Integer.compare(direction % 2, 1);
+        return getY() + step;
+    }
+
     private void randomlyMove() {
         // Scegli una direzione casuale
         int randomDirection = random.nextInt(4);
@@ -97,8 +110,8 @@ public class Ghost {
     }
 
     private void moveTowardsPacman() {
-        int targetX = pacman.getX()+((int)pacman.pacManSize/2) ;
-        int targetY = pacman.getY()+((int)pacman.pacManSize/2);
+        int targetX = pacman.getX() + ((int) pacman.pacManSize / 2);
+        int targetY = pacman.getY() + ((int) pacman.pacManSize / 2);
 
         int deltaX = targetX - getX();
         int deltaY = targetY - getY();
@@ -165,6 +178,30 @@ public class Ghost {
         } else if (direction == 3) {
             moveHorizontally(1); // Sposta verso destra
         }
+    }
+
+    private void blockedInABlock() {
+        // Cerca una direzione libera
+        for (int newDirection = 0; newDirection < 4; newDirection++) {
+            int nextX = calculateNextXInDirection(newDirection);
+            int nextY = calculateNextYInDirection(newDirection);
+
+            // Se la prossima posizione è valida, ruota il fantasma in quella direzione
+            if (isValidMove(nextX, nextY)) {
+                direction = newDirection;
+                break;
+            }
+        }
+    }
+
+    private int calculateNextXInDirection(int newDirection) {
+        int step = Integer.compare(newDirection % 2, 0);
+        return getX() + step;
+    }
+
+    private int calculateNextYInDirection(int newDirection) {
+        int step = Integer.compare(newDirection % 2, 1);
+        return getY() + step;
     }
 
     private void randomlyChangeDirection() {
