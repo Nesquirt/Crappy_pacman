@@ -1,3 +1,5 @@
+import java.awt.*;
+
 public class Pellet {
     private int x;
     private int y;
@@ -26,5 +28,31 @@ public class Pellet {
     public boolean isSpecial() {
         return isSpecial;
     }
-}
 
+    public Rectangle getBounds() {
+        // I limiti del pellet sono rappresentati da un rettangolo
+        return new Rectangle(x, y, isSpecial ? 10 : 5, isSpecial ? 10 : 5);
+    }
+
+    public boolean intersects(int otherX, int otherY, double otherSize) {
+        Rectangle pelletBounds = getBounds();
+        Rectangle otherBounds = new Rectangle(otherX, otherY, (int) otherSize, (int) otherSize);
+        return pelletBounds.intersects(otherBounds);
+    }
+
+    public void draw(Graphics g) {
+        // Disegna il pellet sulla grafica
+        if (isSpecial) {
+            g.setColor(Color.YELLOW);
+            g.fillOval(x, y, 10, 10);
+        } else {
+            g.setColor(Color.WHITE);
+            g.fillOval(x, y, 5, 5);
+        }
+    }
+
+    public int getScore() {
+        // Restituisce il punteggio del pellet
+        return value;
+    }
+}

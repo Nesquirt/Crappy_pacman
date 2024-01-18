@@ -1,8 +1,8 @@
-import java.util.List;
-import java.util.ListIterator;
-import javax.swing.Timer;
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
+import java.util.ListIterator;
 
 public class Pacman {
     private int x;
@@ -11,13 +11,15 @@ public class Pacman {
     private boolean isMoving;
     private int speed;
     private MazeTemplate mazeTemplate;
-    public double pacManSize;
+    private double pacManSize;
     private int score;
     private double speedMultiplier = 0.3; // Moltiplicatore di velocità iniziale
     private int lives;
     private static final int MAX_LIVES = 3;
     private boolean isGameOver;
     private boolean isGameWon;
+    private boolean isSuperMode;
+    private Timer superModeTimer;
 
     public Pacman(int startX, int startY, MazeTemplate mazeTemplate, double pacManSize) {
         x = startX;
@@ -31,6 +33,15 @@ public class Pacman {
         lives = MAX_LIVES; // Inizializza le vite al massimo
         isGameOver = false; // Inizializza il flag del game over a false
         isGameWon = false; // Inizializza il flag della vittoria a false
+        isSuperMode = false; // Inizializza il flag della modalità super a false
+
+        superModeTimer = new Timer(0, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                resetSuperMode();
+            }
+        });
+        superModeTimer.setRepeats(false);
     }
 
     public void move() {
@@ -51,11 +62,12 @@ public class Pacman {
             if (isValidMove(nextX, nextY)) {
                 x = nextX;
                 y = nextY;
-
             }
 
-            // Verifica la raccolta di pellet speciali
-            collectPellets(mazeTemplate.getSpecialPellets());
+            // Verifica la raccolta di pellet speciali solo se non è in modalità super
+            if (!isSuperMode) {
+                collectPellets(mazeTemplate.getSpecialPellets());
+            }
 
             // Verifica la raccolta di pellet normali
             collectPellets(mazeTemplate.getPellets());
@@ -113,11 +125,11 @@ public class Pacman {
     }
 
     public void startMoving() {
-        isMoving = false;
+        isMoving = true;
     }
 
     public void stopMoving() {
-        isMoving = true;
+        isMoving = false;
     }
 
     public void handleInput(boolean[] keyStates) {
@@ -186,34 +198,37 @@ public class Pacman {
         return false;
     }
 
-    private void collectPellets(List<Pellet> pelletList) {
-        ListIterator<Pellet> iterator = pelletList.listIterator();
+    private void collectPellets(List<Pellet> pellets) {
+        ListIterator<Pellet> iterator = pellets.listIterator();
         while (iterator.hasNext()) {
             Pellet pellet = iterator.next();
-            int pelletX = pellet.getX();
-            int pelletY = pellet.getY();
-            int pelletValue = pellet.getValue();
-
-            double distance = Math.sqrt(Math.pow(x - pelletX, 2) + Math.pow(y - pelletY, 2));
-
-            if (distance < pacManSize / 2) {
+            if (pellet.intersects(x, y, pacManSize)) {
                 iterator.remove();
-                score += pelletValue;
-                if (pellet.isSpecial()) {
-                    // Pac-Man ha mangiato un pellet speciale, aumenta la velocità per 5 secondi
-                    speedMultiplier = 1.1; // Moltiplicatore di velocità temporaneo
-                    Timer timer = new Timer(5000, new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            // Ripristina la velocità normale dopo 5 secondi
-                            speedMultiplier = 1.0;
-                        }
-                    });
-                    timer.setRepeats(false);
-                    timer.start();
+                score += pellet.getScore();
+                if (pellet instanceof SpecialPellet) {
+                    activateSuperMode();
                 }
             }
         }
+    }
+
+    private void activateSuperMode() {
+        if (!isSuperMode) {
+            isSuperMode = true;
+            superModeTimer.setInitialDelay(((SpecialPellet) mazeTemplate.getSpecialPellets().get(0)).getDuration());
+            superModeTimer.start();
+        } else {
+            superModeTimer.restart();
+        }
+    }
+
+    private void resetSuperMode() {
+        isSuperMode = false;
+        superModeTimer.stop();
+    }
+
+    public boolean isSuperModeActive() {
+        return isSuperMode;
     }
 
     public int getScore() {
@@ -232,10 +247,20 @@ public class Pacman {
         return isGameWon;
     }
 
+    public double getPacManSize() {
+        return pacManSize;
+    }
+
     public void resetPosition() {
-        x = 50;
-        y = 50;
-        isMoving = false;
+        x = mazeTemplate.getStartingX();
+        y = mazeTemplate.getStartingY();
+        direction = 3; // Guardando a destra
+        stopMoving();
+        mazeTemplate.resetPellets();
+        mazeTemplate.resetSpecialPellets();
+        resetSuperMode();
         lives--;
+        isGameOver = false;
+        isGameWon = false;
     }
 }
