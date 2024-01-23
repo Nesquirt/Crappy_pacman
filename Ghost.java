@@ -20,7 +20,7 @@ public class Ghost {
     private Timer moveTimer;
     private long lastMoveTime = System.currentTimeMillis();
     private int millisecondsPerMove = 16; // Regola questo valore per cambiare la velocità
-    public GhostLogic ghostLogic;
+    private GhostLogic ghostLogic;
 
     public Ghost(String name, int x, int y, MazeTemplate mazeTemplate, Pacman pacman, int speed, int changeDirectionProbability) {
         this.name = name;
@@ -60,17 +60,7 @@ public class Ghost {
     public String getName() {
         return name;
     }
-    public Random getRandom() {
-        return random;
-    }
 
-    public int getChangeDirectionProbability() {
-        return changeDirectionProbability;
-    }
-
-    public void setDirection(int newDirection) {
-        this.direction = newDirection;
-    }
     public void setX(int x) {
         this.x = x;
     }
@@ -109,7 +99,7 @@ public class Ghost {
         moveInDirection(newDirection);
     }
 
-    public void moveInDirection(int newDirection) {
+    private void moveInDirection(int newDirection) {
         if (newDirection == 0) {
             moveVertically(-1); // Sposta verso l'alto
         } else if (newDirection == 1) {
