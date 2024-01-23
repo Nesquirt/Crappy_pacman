@@ -162,28 +162,4 @@ public class MazeTemplate {
     public int getColumnCount() {
         return mazeData[0].length;
     }
-    public int getWidth() {
-        return mazeData[0].length;
-    }
-
-    public int getHeight() {
-        return mazeData.length;
-    }
-    public int getStartingX() {
-        // Sostituisci con la logica corretta per ottenere la coordinata X di partenza di Pacman
-        return 0;
-    }
-
-    public int getStartingY() {
-        // Sostituisci con la logica corretta per ottenere la coordinata Y di partenza di Pacman
-        return 0;
-    }
-
-    public void resetPellets() {
-        initializePellets();
-    }
-
-    public void resetSpecialPellets() {
-        initializePellets();
-    }
 }
