@@ -12,7 +12,7 @@ import java.util.Map;
 public class Gui extends JPanel implements ActionListener {
     private Pacman pacman;
     private MazeTemplate mazeTemplate;
-    private double pacManSize;
+    private int pacManSize;
     private boolean[] keyStates;
     private Map<Integer, ImageIcon> pacManIcons;
     private Map<String, ImageIcon> ghostIcons;
@@ -23,7 +23,7 @@ public class Gui extends JPanel implements ActionListener {
     private boolean gameWon;
     private List<Ghost> ghosts;
 
-    public Gui(Pacman pacman, MazeTemplate mazeTemplate, double pacManSize, Input input, List<Ghost> ghosts) {
+    public Gui(Pacman pacman, MazeTemplate mazeTemplate, int pacManSize, Input input, List<Ghost> ghosts) {
         this.pacman = pacman;
         this.mazeTemplate = mazeTemplate;
         this.pacManSize = pacManSize;
@@ -108,7 +108,7 @@ public class Gui extends JPanel implements ActionListener {
         g.fillRect(0, 0, getWidth(), getHeight());
 
         mazeTemplate.drawMaze(g);
-
+        /*
         int pacManX = (int) Math.round(pacman.getX());
         int pacManY = (int) Math.round(pacman.getY());
         int pacManDirection = pacman.getDirection();
@@ -132,7 +132,10 @@ public class Gui extends JPanel implements ActionListener {
             }
 
             g.drawImage(pacManImage, pacManXCentered, pacManYCentered, (int) Math.round(pacManSize), (int) Math.round(pacManSize), this);
-        }
+            }
+         */
+            g.drawRect(pacman.getX(), pacman.getY(), pacManSize, pacManSize);
+
 
         for (Ghost ghost : ghosts) {
             String ghostName = ghost.getName();

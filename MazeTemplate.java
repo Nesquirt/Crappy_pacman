@@ -34,6 +34,16 @@ public class MazeTemplate {
         for (int i = 0; i < lines.size(); i++) {
             mazeData[i] = lines.get(i).toCharArray();
         }
+        /*
+        for(int i = 0; i<lines.size(); i++)
+        {
+            for(int j = 0; j < 46; j++)
+            {
+                System.out.print(mazeData[i][j]);
+            }
+            System.out.println();
+        }
+        */
     }
 
     private void initializePellets() {
@@ -57,6 +67,7 @@ public class MazeTemplate {
             for (int col = 0; col < getColumnCount(); col++) {
                 char cellType = mazeData[row][col];
                 drawCell(g, row, col, cellType);
+                g.drawRect(row*CELL, col*CELL, CELL, CELL);
             }
         }
 
@@ -130,7 +141,8 @@ public class MazeTemplate {
             case 'o':
                 break; // Cella vuota
 
-            case 'x': // Cella vuota non percorribile
+            case 'x':// Cella vuota non percorribile
+                g.drawRect(x, y, CELL, CELL);
             case 'g': // Recinto fantasmi
             default:
                 break;

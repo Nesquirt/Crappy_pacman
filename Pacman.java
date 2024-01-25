@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.util.List;
 import java.util.ListIterator;
 import javax.swing.Timer;
@@ -11,15 +12,17 @@ public class Pacman {
     private boolean isMoving;
     private int speed;
     private MazeTemplate mazeTemplate;
-    public double pacManSize;
+    public int pacManSize;
     private int score;
-    private double speedMultiplier = 0.3; // Moltiplicatore di velocità iniziale
+    private double speedMultiplier = 1; // Moltiplicatore di velocità iniziale
     private int lives;
     private static final int MAX_LIVES = 3;
     private boolean isGameOver;
     private boolean isGameWon;
 
-    public Pacman(int startX, int startY, MazeTemplate mazeTemplate, double pacManSize) {
+    public Rectangle pacManHitBox;
+
+    public Pacman(int startX, int startY, MazeTemplate mazeTemplate, int pacManSize) {
         x = startX;
         y = startY;
         direction = 3; // Inizialmente guardando a destra
@@ -31,27 +34,41 @@ public class Pacman {
         lives = MAX_LIVES; // Inizializza le vite al massimo
         isGameOver = false; // Inizializza il flag del game over a false
         isGameWon = false; // Inizializza il flag della vittoria a false
+
+        pacManHitBox = new Rectangle(x, y, pacManSize, pacManSize);
     }
 
     public void move() {
+        System.out.println(x + " " + y);
+        speed = 2;
+        speedMultiplier = 1;
         if (isMoving) {
             int nextX = x;
             int nextY = y;
 
-            if (direction == 0) {
-                nextY -= speed * speedMultiplier;
-            } else if (direction == 1) {
-                nextY += speed * speedMultiplier;
-            } else if (direction == 2) {
-                nextX -= speed * speedMultiplier;
-            } else if (direction == 3) {
-                nextX += speed * speedMultiplier;
-            }
+            switch (getDirection()) {
+                case 0:
+                    nextY -= speed * speedMultiplier;
+                    break;
+                case 1:
+                    nextY += speed * speedMultiplier;
+                    break;
+                case 2:
+                    nextX -= speed * speedMultiplier;
+                    break;
+                case 3:
+                    nextX += speed * speedMultiplier;
+                    break;
 
+            }
             if (isValidMove(nextX, nextY)) {
                 x = nextX;
                 y = nextY;
-
+                pacManHitBox.x = nextX;
+                pacManHitBox.y = nextY;
+            }
+            else{
+                stopMoving();
             }
 
             // Verifica la raccolta di pellet speciali
@@ -76,22 +93,44 @@ public class Pacman {
                 isGameWon = true;
             }
         }
+
     }
 
     private boolean isValidMove(int x, int y) {
         int cellX = x / mazeTemplate.CELL;
         int cellY = y / mazeTemplate.CELL;
-
+        char cellType;
         if (cellX >= 0 && cellX < mazeTemplate.getColumnCount() && cellY >= 0 && cellY < mazeTemplate.getRowCount()) {
-            char cellType = mazeTemplate.getMazeData()[cellY][cellX];
-            return cellType != 'x' && cellType != 'v' && cellType != 'h' && cellType != '1' && cellType != '2' && cellType != '3' && cellType != '4';
+            //System.out.println(cellType == 'o' || cellType == 'd' || cellType == 'p');
+            //System.out.println(cellType);
+            //System.out.println(cellType);
+            //System.out.println(cellType);
+            //System.out.println(cellType);
+            return switch (direction) {
+                case 2 -> {
+                    cellType = mazeTemplate.getMazeData()[cellY][cellX - 1];
+                    yield cellType == 'o' || cellType == 'd' || cellType == 'p';
+                }
+                case 3 -> {
+                    cellType = mazeTemplate.getMazeData()[cellY][cellX + 1];
+                    yield cellType == 'o' || cellType == 'd' || cellType == 'p';
+                }
+                case 0 -> {
+                    cellType = mazeTemplate.getMazeData()[cellY - 1][cellX];
+                    yield cellType == 'o' || cellType == 'd' || cellType == 'p';
+                }
+                case 1 -> {
+                    cellType = mazeTemplate.getMazeData()[cellY + 1][cellX];
+                    yield cellType == 'o' || cellType == 'd' || cellType == 'p';
+                }
+                default -> false;
+            };
         }
-
         return false;
     }
 
     public void setDirection(int newDirection) {
-        if (newDirection >= 0 && newDirection <= 3) {
+        if (newDirection >= 0 && newDirection <= 3 ){// && getX() % mazeTemplate.CELL == 0 && getY()% mazeTemplate.CELL == 0) {
             direction = newDirection;
         }
     }
@@ -113,31 +152,31 @@ public class Pacman {
     }
 
     public void startMoving() {
-        isMoving = false;
-    }
-
-    public void stopMoving() {
         isMoving = true;
     }
 
+    public void stopMoving() {
+        isMoving = false;
+    }
+
     public void handleInput(boolean[] keyStates) {
-        if (keyStates[0] && canMoveUp()) {
+        if (keyStates[0]) {
             setDirection(0); // Su
             startMoving();
-        } else if (keyStates[1] && canMoveDown()) {
+        } else if (keyStates[1]) {
             setDirection(1); // Giù
             startMoving();
-        } else if (keyStates[2] && canMoveLeft()) {
+        } else if (keyStates[2]) {
             setDirection(2); // Sinistra
             startMoving();
-        } else if (keyStates[3] && canMoveRight()) {
+        } else if (keyStates[3]) {
             setDirection(3); // Destra
             startMoving();
         } else {
-            stopMoving();
+            //stopMoving();
         }
     }
-
+    /*
     private boolean canMoveUp() {
         int cellX = x / mazeTemplate.CELL;
         int cellY = y / mazeTemplate.CELL;
@@ -186,32 +225,36 @@ public class Pacman {
         return false;
     }
 
+     */
+
     private void collectPellets(List<Pellet> pelletList) {
+        Rectangle currentPellet;
         ListIterator<Pellet> iterator = pelletList.listIterator();
         while (iterator.hasNext()) {
             Pellet pellet = iterator.next();
             int pelletX = pellet.getX();
             int pelletY = pellet.getY();
             int pelletValue = pellet.getValue();
+            currentPellet = new Rectangle(pelletX, pelletY, 3, 3);
 
-            double distance = Math.sqrt(Math.pow(x - pelletX, 2) + Math.pow(y - pelletY, 2));
-
-            if (distance < pacManSize / 2) {
+            if(pacManHitBox.intersects(currentPellet))
+            {
                 iterator.remove();
                 score += pelletValue;
                 if (pellet.isSpecial()) {
                     // Pac-Man ha mangiato un pellet speciale, aumenta la velocità per 5 secondi
-                    speedMultiplier = 1.1; // Moltiplicatore di velocità temporaneo
+                    speedMultiplier = 2; // Moltiplicatore di velocità temporaneo
                     Timer timer = new Timer(5000, new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             // Ripristina la velocità normale dopo 5 secondi
-                            speedMultiplier = 1.0;
+                            speedMultiplier = 1;
                         }
                     });
                     timer.setRepeats(false);
                     timer.start();
-                }
+            }
+
             }
         }
     }
@@ -233,8 +276,8 @@ public class Pacman {
     }
 
     public void resetPosition() {
-        x = 50;
-        y = 50;
+        x = 40;
+        y = 40;
         isMoving = false;
         lives--;
     }
