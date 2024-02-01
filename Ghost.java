@@ -110,8 +110,8 @@ public class Ghost {
     }
 
     private void moveTowardsPacman() {
-        int targetX = pacman.getX() + ((int) pacman.pacManSize / 2);
-        int targetY = pacman.getY() + ((int) pacman.pacManSize / 2);
+        int targetX = pacman.getX(); // + ((int) pacman.pacManSize / 2);
+        int targetY = pacman.getY(); // + ((int) pacman.pacManSize / 2);
 
         int deltaX = targetX - getX();
         int deltaY = targetY - getY();

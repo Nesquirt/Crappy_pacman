@@ -39,7 +39,7 @@ public class Pacman {
     }
 
     public void move() {
-        System.out.println(x + " " + y);
+        //System.out.println(x + " " + y);
         speed = 2;
         speedMultiplier = 1;
         if (isMoving) {
@@ -61,13 +61,14 @@ public class Pacman {
                     break;
 
             }
-            if (isValidMove(nextX, nextY)) {
+            if (isValidMove(pacManHitBox.x, pacManHitBox.y)) {
                 x = nextX;
                 y = nextY;
                 pacManHitBox.x = nextX;
                 pacManHitBox.y = nextY;
             }
             else{
+                System.out.println("Trovato un muro");
                 stopMoving();
             }
 
@@ -109,19 +110,23 @@ public class Pacman {
             return switch (direction) {
                 case 2 -> {
                     cellType = mazeTemplate.getMazeData()[cellY][cellX - 1];
-                    yield cellType == 'o' || cellType == 'd' || cellType == 'p';
+                    yield cellType == 'o' || cellType == 'd' || cellType == 'p'
+                            || cellType == '1' || cellType == '2' || cellType == '3' || cellType == '4';
                 }
                 case 3 -> {
                     cellType = mazeTemplate.getMazeData()[cellY][cellX + 1];
-                    yield cellType == 'o' || cellType == 'd' || cellType == 'p';
+                    yield cellType == 'o' || cellType == 'd' || cellType == 'p'
+                            || cellType == '1' || cellType == '2' || cellType == '3' || cellType == '4';
                 }
                 case 0 -> {
                     cellType = mazeTemplate.getMazeData()[cellY - 1][cellX];
-                    yield cellType == 'o' || cellType == 'd' || cellType == 'p';
+                    yield cellType == 'o' || cellType == 'd' || cellType == 'p'
+                            || cellType == '1' || cellType == '2' || cellType == '3' || cellType == '4';
                 }
                 case 1 -> {
                     cellType = mazeTemplate.getMazeData()[cellY + 1][cellX];
-                    yield cellType == 'o' || cellType == 'd' || cellType == 'p';
+                    yield cellType == 'o' || cellType == 'd' || cellType == 'p'
+                            || cellType == '1' || cellType == '2' || cellType == '3' || cellType == '4';
                 }
                 default -> false;
             };

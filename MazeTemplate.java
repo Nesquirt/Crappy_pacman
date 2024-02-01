@@ -123,18 +123,22 @@ public class MazeTemplate {
                 break;
 
             case '1': // Angolo alto-dx
+            case '5':
                 drawCorner(g, x - CELL / 2, y + CELL / 2);
                 break;
 
             case '2': // Angolo alto-sx
+            case '6':
                 drawCorner(g, x + CELL / 2, y + CELL / 2);
                 break;
 
             case '3': // Angolo basso-dx
+            case '7':
                 drawCorner(g, x - CELL / 2, y - CELL / 2);
                 break;
 
             case '4': // Angolo basso-sx
+            case '8':
                 drawCorner(g, x + CELL / 2, y - CELL / 2);
                 break;
 
