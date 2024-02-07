@@ -108,25 +108,20 @@ public class Pacman {
             //System.out.println(cellType);
             //System.out.println(cellType);
             return switch (direction) {
-                case 2 -> {
-                    cellType = mazeTemplate.getMazeData()[cellY][cellX - 1];
-                    yield cellType == 'o' || cellType == 'd' || cellType == 'p'
-                            || cellType == '1' || cellType == '2' || cellType == '3' || cellType == '4';
+                case 2, 0 -> {
+                    cellType = mazeTemplate.getMazeData()[cellY][cellX];
+                    yield cellType == 'o' || cellType == 'd' || cellType == 'p';
+                            //|| cellType == '1' || cellType == '2' || cellType == '3' || cellType == '4';
                 }
                 case 3 -> {
                     cellType = mazeTemplate.getMazeData()[cellY][cellX + 1];
-                    yield cellType == 'o' || cellType == 'd' || cellType == 'p'
-                            || cellType == '1' || cellType == '2' || cellType == '3' || cellType == '4';
-                }
-                case 0 -> {
-                    cellType = mazeTemplate.getMazeData()[cellY - 1][cellX];
-                    yield cellType == 'o' || cellType == 'd' || cellType == 'p'
-                            || cellType == '1' || cellType == '2' || cellType == '3' || cellType == '4';
+                    yield cellType == 'o' || cellType == 'd' || cellType == 'p';
+                            //|| cellType == '1' || cellType == '2' || cellType == '3' || cellType == '4';
                 }
                 case 1 -> {
                     cellType = mazeTemplate.getMazeData()[cellY + 1][cellX];
-                    yield cellType == 'o' || cellType == 'd' || cellType == 'p'
-                            || cellType == '1' || cellType == '2' || cellType == '3' || cellType == '4';
+                    yield cellType == 'o' || cellType == 'd' || cellType == 'p';
+                            //|| cellType == '1' || cellType == '2' || cellType == '3' || cellType == '4';
                 }
                 default -> false;
             };
