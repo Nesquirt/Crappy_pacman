@@ -16,7 +16,7 @@ public class Main {
 
             // Crea una lista di fantasmi
             List<Ghost> ghosts = new ArrayList<>();
-            ghosts.add(new Ghost("Inky", 100, 100, mazeTemplate, pacman, 5,0));
+            ghosts.add(new Ghost("Inky", 380, 180, mazeTemplate, pacman, 5,0));
             ghosts.add(new Ghost("Blinky", 225, 225, mazeTemplate, pacman, 5,0));
             ghosts.add(new Ghost("Pinky", 310, 320, mazeTemplate, pacman, 5,0));
             ghosts.add(new Ghost("Clyde", 400, 400, mazeTemplate, pacman, 5,0));

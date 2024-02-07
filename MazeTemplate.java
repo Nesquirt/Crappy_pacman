@@ -67,7 +67,7 @@ public class MazeTemplate {
             for (int col = 0; col < getColumnCount(); col++) {
                 char cellType = mazeData[row][col];
                 drawCell(g, row, col, cellType);
-                g.drawRect(row*CELL, col*CELL, CELL, CELL);
+                //g.drawRect(row*CELL, col*CELL, CELL, CELL);
             }
         }
 
@@ -146,7 +146,7 @@ public class MazeTemplate {
                 break; // Cella vuota
 
             case 'x':// Cella vuota non percorribile
-                g.drawRect(x, y, CELL, CELL);
+                //g.drawRect(x, y, CELL, CELL);
             case 'g': // Recinto fantasmi
             default:
                 break;

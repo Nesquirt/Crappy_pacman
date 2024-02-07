@@ -19,7 +19,6 @@ public class Pacman {
     private static final int MAX_LIVES = 3;
     private boolean isGameOver;
     private boolean isGameWon;
-
     public Rectangle pacManHitBox;
 
     public Pacman(int startX, int startY, MazeTemplate mazeTemplate, int pacManSize) {
@@ -38,13 +37,15 @@ public class Pacman {
         pacManHitBox = new Rectangle(x, y, pacManSize, pacManSize);
     }
 
-    public void move() {
+    public void move()
+    {
         //System.out.println(x + " " + y);
         speed = 2;
         speedMultiplier = 1;
         if (isMoving) {
             int nextX = x;
             int nextY = y;
+
 
             switch (getDirection()) {
                 case 0:
@@ -66,6 +67,8 @@ public class Pacman {
                 y = nextY;
                 pacManHitBox.x = nextX;
                 pacManHitBox.y = nextY;
+
+
             }
             else{
                 System.out.println("Trovato un muro");
@@ -107,11 +110,22 @@ public class Pacman {
             //System.out.println(cellType);
             //System.out.println(cellType);
             //System.out.println(cellType);
+            System.out.println(cellX + ", " + cellY);
             return switch (direction) {
-                case 2, 0 -> {
-                    cellType = mazeTemplate.getMazeData()[cellY][cellX];
-                    yield cellType == 'o' || cellType == 'd' || cellType == 'p';
+                case 0 -> {
+                    if(y%20==0) {
+                        cellType = mazeTemplate.getMazeData()[cellY - 1][cellX];
+                        yield cellType == 'o' || cellType == 'd' || cellType == 'p';
+                    } else
+                        yield true;
                             //|| cellType == '1' || cellType == '2' || cellType == '3' || cellType == '4';
+                }
+                case 2 -> {
+                    if(x%20==0) {
+                        cellType = mazeTemplate.getMazeData()[cellY][cellX-1];
+                        yield cellType == 'o' || cellType == 'd' || cellType == 'p';
+                    } else
+                        yield true;
                 }
                 case 3 -> {
                     cellType = mazeTemplate.getMazeData()[cellY][cellX + 1];
@@ -130,7 +144,7 @@ public class Pacman {
     }
 
     public void setDirection(int newDirection) {
-        if (newDirection >= 0 && newDirection <= 3 ){// && getX() % mazeTemplate.CELL == 0 && getY()% mazeTemplate.CELL == 0) {
+        if (newDirection >= 0 && newDirection <= 3 && x%20==0 && y%20==0){// && getX() % mazeTemplate.CELL == 0 && getY()% mazeTemplate.CELL == 0) {
             direction = newDirection;
         }
     }

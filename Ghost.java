@@ -17,6 +17,7 @@ public class Ghost {
     private Timer moveTimer;
     private long lastMoveTime = System.currentTimeMillis();
     private int millisecondsPerMove = 16; // Regola questo valore per cambiare la velocità
+    private int newDirection;
 
     public Ghost(String name, int x, int y, MazeTemplate mazeTemplate, Pacman pacman, int speed, int changeDirectionProbability) {
         this.name = name;
@@ -117,7 +118,8 @@ public class Ghost {
         int deltaY = targetY - getY();
 
         // Calcola la direzione più breve per raggiungere Pac-Man
-        int newDirection = calculateShortestDirection(deltaX, deltaY);
+        //if(getX()%20==0 && getY()%20==0)
+            newDirection = calculateShortestDirection(deltaX, deltaY);
 
         // Sposta il fantasma nella nuova direzione
         moveInDirection(newDirection);
