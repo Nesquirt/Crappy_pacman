@@ -13,7 +13,6 @@ public class Ghost {
     private Pacman pacman;
     private MazeTemplate mazeTemplate;
     private Random random;
-    private int changeDirectionProbability; // Probabilità di cambiare direzione (in percentuale)
     private Timer moveTimer;
     private long lastMoveTime = System.currentTimeMillis();
     private int millisecondsPerMove = 16; // Regola questo valore per cambiare la velocità
@@ -29,13 +28,12 @@ public class Ghost {
         this.direction = 0; // Inizia muovendosi verso l'alto
         this.mazeTemplate = mazeTemplate;
         this.random = new Random();
-        this.changeDirectionProbability = changeDirectionProbability;
 
         moveTimer = new Timer();
         moveTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                move();
+                //move();
             }
         }, 0, 16);  // Esegui il metodo move() ogni 100 millisecondi (puoi regolare l'intervallo)
     }
@@ -64,6 +62,9 @@ public class Ghost {
         this.y = y;
     }
 
+
+
+    /*
     public void stopMoving() {
         moveTimer.cancel();
     }
@@ -75,41 +76,9 @@ public class Ghost {
         if (elapsedTime >= millisecondsPerMove) {
             moveTowardsPacman();
 
-            // Se il fantasma è bloccato, ruota nella prima direzione utile
-            if (!isValidMove(calculateNextX(), calculateNextY())) {
-                blockedInABlock();
-            }
-
             lastMoveTime = currentTime;
         }
     }
-
-    private int calculateNextX() {
-        int step = Integer.compare(direction % 2, 0);
-        return getX() + step;
-    }
-
-    private int calculateNextY() {
-        int step = Integer.compare(direction % 2, 1);
-        return getY() + step;
-    }
-
-    private void randomlyMove() {
-        // Scegli una direzione casuale
-        int randomDirection = random.nextInt(4);
-
-        // Sposta il fantasma nella direzione casuale
-        if (randomDirection == 0) {
-            moveVertically(-1); // Sposta verso l'alto
-        } else if (randomDirection == 1) {
-            moveVertically(1); // Sposta verso il basso
-        } else if (randomDirection == 2) {
-            moveHorizontally(-1); // Sposta verso sinistra
-        } else if (randomDirection == 3) {
-            moveHorizontally(1); // Sposta verso destra
-        }
-    }
-
     private void moveTowardsPacman() {
         int targetX = pacman.getX(); // + ((int) pacman.pacManSize / 2);
         int targetY = pacman.getY(); // + ((int) pacman.pacManSize / 2);
@@ -170,58 +139,48 @@ public class Ghost {
         }
     }
 
-    private void continueInCurrentDirection() {
-        if (direction == 0) {
-            moveVertically(-1); // Sposta verso l'alto
-        } else if (direction == 1) {
-            moveVertically(1); // Sposta verso il basso
-        } else if (direction == 2) {
-            moveHorizontally(-1); // Sposta verso sinistra
-        } else if (direction == 3) {
-            moveHorizontally(1); // Sposta verso destra
-        }
-    }
-
-    private void blockedInABlock() {
-        // Cerca una direzione libera
-        for (int newDirection = 0; newDirection < 4; newDirection++) {
-            int nextX = calculateNextXInDirection(newDirection);
-            int nextY = calculateNextYInDirection(newDirection);
-
-            // Se la prossima posizione è valida, ruota il fantasma in quella direzione
-            if (isValidMove(nextX, nextY)) {
-                direction = newDirection;
-                break;
-            }
-        }
-    }
-
-    private int calculateNextXInDirection(int newDirection) {
-        int step = Integer.compare(newDirection % 2, 0);
-        return getX() + step;
-    }
-
-    private int calculateNextYInDirection(int newDirection) {
-        int step = Integer.compare(newDirection % 2, 1);
-        return getY() + step;
-    }
-
-    private void randomlyChangeDirection() {
-        // Aggiungi una probabilità del 5% di cambiare direzione ad ogni passo
-        if (random.nextDouble(100) < changeDirectionProbability / 100.0) {
-            direction = random.nextInt(4);
-        }
-    }
-
     private boolean isValidMove(int x, int y) {
         int cellX = x / mazeTemplate.CELL;
         int cellY = y / mazeTemplate.CELL;
-
+        char cellType;
         if (cellX >= 0 && cellX < mazeTemplate.getColumnCount() && cellY >= 0 && cellY < mazeTemplate.getRowCount()) {
-            char cellType = mazeTemplate.getMazeData()[cellY][cellX];
-            return cellType != 'x' && cellType != 'v' && cellType != 'h' && cellType != '1' && cellType != '2' && cellType != '3' && cellType != '4';
+            //System.out.println(cellType == 'o' || cellType == 'd' || cellType == 'p');
+            //System.out.println(cellType);
+            //System.out.println(cellType);
+            //System.out.println(cellType);
+            //System.out.println(cellType);
+            System.out.println(cellX + ", " + cellY);
+            return switch (direction) {
+                case 0 -> {
+                    if(y%20==0) {
+                        cellType = mazeTemplate.getMazeData()[cellY - 1][cellX];
+                        yield cellType == 'o' || cellType == 'd' || cellType == 'p';
+                    } else
+                        yield true;
+                    //|| cellType == '1' || cellType == '2' || cellType == '3' || cellType == '4';
+                }
+                case 2 -> {
+                    if(x%20==0) {
+                        cellType = mazeTemplate.getMazeData()[cellY][cellX-1];
+                        yield cellType == 'o' || cellType == 'd' || cellType == 'p';
+                    } else
+                        yield true;
+                }
+                case 3 -> {
+                    cellType = mazeTemplate.getMazeData()[cellY][cellX + 1];
+                    yield cellType == 'o' || cellType == 'd' || cellType == 'p';
+                    //|| cellType == '1' || cellType == '2' || cellType == '3' || cellType == '4';
+                }
+                case 1 -> {
+                    cellType = mazeTemplate.getMazeData()[cellY + 1][cellX];
+                    yield cellType == 'o' || cellType == 'd' || cellType == 'p';
+                    //|| cellType == '1' || cellType == '2' || cellType == '3' || cellType == '4';
+                }
+                default -> false;
+            };
         }
-
         return false;
     }
+
+     */
 }
