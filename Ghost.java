@@ -183,4 +183,57 @@ public class Ghost {
     }
 
      */
+
+    public void move(){
+        int targetX = pacman.getX();
+        int targetY = pacman.getY();
+
+        int deltaX = targetX - getX();
+        int deltaY = targetY - getY();
+        }
+
+
+
+    private boolean isValidMove(int x, int y) {
+        int cellX = x / mazeTemplate.CELL;
+        int cellY = y / mazeTemplate.CELL;
+        char cellType;
+        if (cellX >= 0 && cellX < mazeTemplate.getColumnCount() && cellY >= 0 && cellY < mazeTemplate.getRowCount()) {
+            //System.out.println(cellType == 'o' || cellType == 'd' || cellType == 'p');
+            //System.out.println(cellType);
+            //System.out.println(cellType);
+            //System.out.println(cellType);
+            //System.out.println(cellType);
+            System.out.println(cellX + ", " + cellY);
+            return switch (direction) {
+                case 0 -> {
+                    if (y % 20 == 0) {
+                        cellType = mazeTemplate.getMazeData()[cellY - 1][cellX];
+                        yield cellType == 'o' || cellType == 'd' || cellType == 'p';
+                    } else
+                        yield true;
+                    //|| cellType == '1' || cellType == '2' || cellType == '3' || cellType == '4';
+                }
+                case 2 -> {
+                    if (x % 20 == 0) {
+                        cellType = mazeTemplate.getMazeData()[cellY][cellX - 1];
+                        yield cellType == 'o' || cellType == 'd' || cellType == 'p';
+                    } else
+                        yield true;
+                }
+                case 3 -> {
+                    cellType = mazeTemplate.getMazeData()[cellY][cellX + 1];
+                    yield cellType == 'o' || cellType == 'd' || cellType == 'p';
+                    //|| cellType == '1' || cellType == '2' || cellType == '3' || cellType == '4';
+                }
+                case 1 -> {
+                    cellType = mazeTemplate.getMazeData()[cellY + 1][cellX];
+                    yield cellType == 'o' || cellType == 'd' || cellType == 'p';
+                    //|| cellType == '1' || cellType == '2' || cellType == '3' || cellType == '4';
+                }
+                default -> false;
+            };
+        }
+        return false;
+    }
 }
