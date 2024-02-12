@@ -24,22 +24,27 @@ public class Menu extends JFrame {
         buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 50, 50)); // Allineamento centrale, spazio orizzontale di 50 pixel e spazio verticale di 20 pixel
         buttonPanel.setBackground(Color.BLACK);
 
+        // Caricamento delle immagini per i pulsanti
+        ImageIcon startImageIcon = new ImageIcon("images/start.png");
+        ImageIcon leaderboardImageIcon = new ImageIcon("images/leaderboard.png");
+        ImageIcon quitImageIcon = new ImageIcon("images/quit.png");
+
         // Pulsante Start
-        JButton startButton = new JButton("Start");
+        JButton startButton = new JButton();
+        startButton.setIcon(startImageIcon);
         startButton.setPreferredSize(new Dimension(200, 60));
-        startButton.setFont(new Font("Arial", Font.BOLD, 20));
         buttonPanel.add(startButton);
 
         // Pulsante Leaderboard
-        JButton leaderboardButton = new JButton("Leaderboard");
+        JButton leaderboardButton = new JButton();
+        leaderboardButton.setIcon(leaderboardImageIcon);
         leaderboardButton.setPreferredSize(new Dimension(200, 60));
-        leaderboardButton.setFont(new Font("Arial", Font.BOLD, 20));
         buttonPanel.add(leaderboardButton);
 
         // Pulsante Quit
-        JButton quitButton = new JButton("Quit");
+        JButton quitButton = new JButton();
+        quitButton.setIcon(quitImageIcon);
         quitButton.setPreferredSize(new Dimension(200, 60));
-        quitButton.setFont(new Font("Arial", Font.BOLD, 20));
         buttonPanel.add(quitButton);
 
         // Aggiunta del pannello dei pulsanti al pannello principale
