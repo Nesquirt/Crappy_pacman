@@ -1,5 +1,7 @@
 import javax.swing.*;
+import javax.swing.border.AbstractBorder;
 import java.awt.*;
+import java.awt.geom.RoundRectangle2D;
 
 public class Menu extends JFrame {
 
@@ -15,7 +17,7 @@ public class Menu extends JFrame {
         mainPanel.setBackground(Color.BLACK);
 
         // Aggiunta del logo di Pacman al centro
-        ImageIcon pacmanIcon = new ImageIcon("images/menu_logo.png"); // Assicurati che il percorso sia corretto
+        ImageIcon pacmanIcon = new ImageIcon("images/menu_logo.png");
         JLabel pacmanLabel = new JLabel(pacmanIcon);
         mainPanel.add(pacmanLabel, BorderLayout.CENTER);
 
@@ -33,18 +35,24 @@ public class Menu extends JFrame {
         JButton startButton = new JButton();
         startButton.setIcon(startImageIcon);
         startButton.setPreferredSize(new Dimension(200, 60));
+        //startButton.setBorder(new RoundBorder(10));
+        startButton.setFocusPainted(true);
         buttonPanel.add(startButton);
 
         // Pulsante Leaderboard
         JButton leaderboardButton = new JButton();
         leaderboardButton.setIcon(leaderboardImageIcon);
         leaderboardButton.setPreferredSize(new Dimension(200, 60));
+        leaderboardButton.setBorder(new RoundBorder(10));
+        leaderboardButton.setFocusPainted(true);
         buttonPanel.add(leaderboardButton);
 
         // Pulsante Quit
         JButton quitButton = new JButton();
         quitButton.setIcon(quitImageIcon);
         quitButton.setPreferredSize(new Dimension(200, 60));
+        quitButton.setBorder(new RoundBorder(10));
+        quitButton.setFocusPainted(true);
         buttonPanel.add(quitButton);
 
         // Aggiunta del pannello dei pulsanti al pannello principale
@@ -58,5 +66,22 @@ public class Menu extends JFrame {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(Menu::new);
+    }
+
+    // Classe per definire un bordo arrotondato
+    static class RoundBorder extends AbstractBorder {
+        private final int radius;
+
+        RoundBorder(int radius) {
+            this.radius = radius;
+        }
+
+        @Override
+        public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+            Graphics2D g2d = (Graphics2D) g.create();
+            g2d.setColor(c.getBackground());
+            g2d.draw(new RoundRectangle2D.Double(x, y, width - 1, height - 1, radius, radius));
+            g2d.dispose();
+        }
     }
 }
