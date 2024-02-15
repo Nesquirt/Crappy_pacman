@@ -15,8 +15,6 @@ public class Pacman {
     public int pacManSize;
     private int score;
     private double speedMultiplier = 1; // Moltiplicatore di velocità iniziale
-    private int lives;
-    private static final int MAX_LIVES = 3;
     private boolean isGameOver;
     private boolean isGameWon;
     public Rectangle pacManHitBox;
@@ -30,7 +28,6 @@ public class Pacman {
         this.mazeTemplate = mazeTemplate; // Inizializza il riferimento a MazeTemplate
         this.pacManSize = pacManSize; // Inizializza la dimensione di Pac-Man come double
         score = 0; // Inizializza il punteggio a 0
-        lives = MAX_LIVES; // Inizializza le vite al massimo
         isGameOver = false; // Inizializza il flag del game over a false
         isGameWon = false; // Inizializza il flag della vittoria a false
 
@@ -83,11 +80,7 @@ public class Pacman {
 
             // Controlla se tutti i pellet sono stati mangiati
             if (mazeTemplate.getPellets().isEmpty() && mazeTemplate.getSpecialPellets().isEmpty()) {
-                if (lives > 0) {
-                    // Ripristina la posizione iniziale
-                    resetPosition();
-                } else {
-                    // Game over
+
                     isGameOver = true;
                 }
             }
@@ -98,7 +91,6 @@ public class Pacman {
             }
         }
 
-    }
 
     private boolean isValidMove(int x, int y) {
         int cellX = x / mazeTemplate.CELL;
@@ -277,9 +269,6 @@ public class Pacman {
         return score;
     }
 
-    public int getLives() {
-        return lives;
-    }
 
     public boolean isGameOver() {
         return isGameOver;
@@ -293,6 +282,5 @@ public class Pacman {
         x = 40;
         y = 40;
         isMoving = false;
-        lives--;
     }
 }
