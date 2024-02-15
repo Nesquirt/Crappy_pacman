@@ -184,8 +184,10 @@ public class Gui extends JPanel implements ActionListener {
 
             if (pacman.isGameOver()) {
                 System.out.println("Hai perso!");
+
             } else if (pacman.isGameWon()) {
                 gameWon = true;
+
             }
         }
     }
