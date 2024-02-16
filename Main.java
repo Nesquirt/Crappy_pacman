@@ -38,3 +38,6 @@ public class Main {
         });
     }
 }
+
+//TODO:Gestire logica fantasmi
+//TODO:Schermata di vittoria se si mangiano tutti i pallet, schermata di sconfitta se si perdono tutte le vite
