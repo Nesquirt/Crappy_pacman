@@ -8,12 +8,15 @@ import java.util.Arrays;
 public class scoreboard extends JFrame {
     JTextArea ScoreText;
     Score[] topScores;
-    public scoreboard (Menu main ){
+    static JFrame gameFrame;
+    static Menu menu;
+    public scoreboard (Menu menu ){
         super("Pacman");
         setSize(920, 460);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
         setVisible(false);
+        this.menu = menu;
 
         //Inizializzazione array di punteggi
         topScores = new Score[5];
@@ -73,7 +76,7 @@ public class scoreboard extends JFrame {
             public void actionPerformed(ActionEvent e)
             {
                 setVisible(false);
-                main.setVisible(true);
+                menu.setVisible(true);
 
             }
 
@@ -112,7 +115,7 @@ public class scoreboard extends JFrame {
                 }
             }
 
-            for(int i = 0; i < topScores.length; i++)
+            for(int i = topScores.length - 1; i >= 0; i--)
             {
                 String newText = ScoreText.getText() + "\n" + topScores[i].name + ": " + topScores[i].score;
                 ScoreText.setText(newText);
@@ -124,13 +127,16 @@ public class scoreboard extends JFrame {
 
     }
 
-    public void writeFile(String newName, int newScore)
+    public static void writeFile(String newName, int newScore)
     {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("Scores.txt", true))) {
-            writer.write(newName + " " + newScore);
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("Score.txt", true))) {
+            writer.write("\n" + newName + " " + newScore);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        menu.setVisible(true);
+        gameFrame.setVisible(false);
+
     }
 
 

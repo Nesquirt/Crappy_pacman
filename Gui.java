@@ -17,8 +17,8 @@ public class Gui extends JPanel implements ActionListener {
     private Map<String, ImageIcon> ghostIcons;
     private Input input;
     private int timeElapsed;
-    private boolean gameWon;
     private List<Ghost> ghosts;
+    private Boolean gameOverSequence;
 
     public Gui(Pacman pacman, MazeTemplate mazeTemplate, int pacManSize, Input input, List<Ghost> ghosts) {
         this.pacman = pacman;
@@ -28,9 +28,8 @@ public class Gui extends JPanel implements ActionListener {
         this.ghostIcons = loadGhostIcons();
         this.input = input;
         this.timeElapsed = 0;
-        this.gameWon = false;
         this.ghosts = ghosts;
-
+        this.gameOverSequence = false;
         setPreferredSize(new Dimension(920, 460));
         setFocusable(true);
         addKeyListener(new KeyAdapter() {
@@ -77,9 +76,9 @@ public class Gui extends JPanel implements ActionListener {
     }
 
     private void handleKeyPress(KeyEvent e) {
-        if (gameWon) {
+        if (pacman.isGameWon()) {
             if (e.getKeyCode() == KeyEvent.VK_R) {
-                gameWon = false;
+                pacman.setGameWon(false);
                 pacman.resetPosition();
                 repaint();
             } else if (e.getKeyCode() == KeyEvent.VK_Q) {
@@ -91,7 +90,7 @@ public class Gui extends JPanel implements ActionListener {
     }
 
     private void handleKeyRelease(KeyEvent e) {
-        if (!gameWon) {
+        if (!pacman.isGameWon()) {
             input.keyReleased(e);
         }
     }
@@ -142,7 +141,14 @@ public class Gui extends JPanel implements ActionListener {
         String timeText = "Tempo: " + timeElapsed + " s";
         g.drawString(timeText, 190, getHeight() - 20);
 
-        if (gameWon) {
+        if (pacman.isGameWon() && gameOverSequence == false) {
+            gameOverSequence = true;
+            String name = javax.swing.JOptionPane.showInputDialog("Fine Partita! Inserisci il tuo nome: ");
+            setVisible(false);
+            scoreboard.writeFile(name, pacman.getScore());
+
+            //this.getRootPane().getParent().getParent().setVisible(true);
+            /*
             g.setColor(Color.YELLOW);
             g.setFont(new Font("Arial", Font.BOLD, 30));
             String winMessage = "Hai vinto! Premi R per riprovare, Q per uscire.";
@@ -150,12 +156,13 @@ public class Gui extends JPanel implements ActionListener {
             int messageX = getWidth() / 2 - messageWidth / 2;
             int messageY = getHeight() / 2;
             g.drawString(winMessage, messageX, messageY);
+             */
         }
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (!gameWon) {
+        if (!pacman.isGameWon()) {
             pacman.handleInput(input.getKeyStates());
             pacman.move();
 
@@ -166,7 +173,7 @@ public class Gui extends JPanel implements ActionListener {
             repaint();
 
             if (pacman.isGameWon()) {
-                gameWon = true;
+                pacman.setGameWon(true);
 
             }
         }

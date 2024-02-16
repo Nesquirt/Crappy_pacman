@@ -16,9 +16,10 @@ public class Pacman {
     private int score;
     private double speedMultiplier = 1.2; // Moltiplicatore di velocità iniziale
     private boolean isGameWon;
-    public Rectangle pacManHitBox;
+    public Rectangle pacmanHitbox;
+    private List<Ghost> ghosts;
 
-    public Pacman(int startX, int startY, MazeTemplate mazeTemplate, int pacManSize) {
+    public Pacman(int startX, int startY, MazeTemplate mazeTemplate, int pacManSize, List<Ghost> ghosts) {
         x = startX;
         y = startY;
         direction = 3; // Inizialmente guardando a destra
@@ -26,9 +27,10 @@ public class Pacman {
         speed = 2; // Velocità di movimento
         this.mazeTemplate = mazeTemplate; // Inizializza il riferimento a MazeTemplate
         this.pacManSize = pacManSize; // Inizializza la dimensione di Pac-Man come double
+        this.ghosts = ghosts;
         score = 0; // Inizializza il punteggio a 0
         isGameWon = false;
-        pacManHitBox = new Rectangle(x, y, pacManSize, pacManSize);
+        pacmanHitbox = new Rectangle(x, y, pacManSize, pacManSize);
     }
 
     public void move()
@@ -56,11 +58,11 @@ public class Pacman {
                     break;
 
             }
-            if (isValidMove(pacManHitBox.x, pacManHitBox.y)) {
+            if (isValidMove(pacmanHitbox.x, pacmanHitbox.y)) {
                 x = nextX;
                 y = nextY;
-                pacManHitBox.x = nextX;
-                pacManHitBox.y = nextY;
+                pacmanHitbox.x = nextX;
+                pacmanHitbox.y = nextY;
 
 
             }
@@ -78,8 +80,18 @@ public class Pacman {
             // Controlla se tutti i pellet sono stati mangiati
             if (mazeTemplate.getPellets().isEmpty() && mazeTemplate.getSpecialPellets().isEmpty()) {
                 isGameWon= true;
+                score += 1000;
                 }
             }
+
+            //collisione con fantasma
+        for(int i = 0; i<ghosts.size();i++)
+        {
+            if(pacmanHitbox.intersects(ghosts.get(i).getGhostHitbox()))
+            {
+                setGameWon(true);
+            }
+        }
         }
 
 
@@ -175,6 +187,10 @@ public class Pacman {
     }
 
 
+    private void ghostCollision()
+    {
+
+    }
     private void collectPellets(List<Pellet> pelletList) {
         Rectangle currentPellet;
         ListIterator<Pellet> iterator = pelletList.listIterator();
@@ -185,7 +201,7 @@ public class Pacman {
             int pelletValue = pellet.getValue();
             currentPellet = new Rectangle(pelletX, pelletY, 3, 3);
 
-            if(pacManHitBox.intersects(currentPellet))
+            if(pacmanHitbox.intersects(currentPellet))
             {
                 iterator.remove();
                 score += pelletValue;
@@ -213,6 +229,10 @@ public class Pacman {
 
     public boolean isGameWon() {
         return isGameWon;
+    }
+    public void setGameWon(boolean newState)
+    {
+        isGameWon = newState;
     }
 
     public void resetPosition() {

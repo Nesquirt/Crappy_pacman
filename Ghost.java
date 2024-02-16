@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -14,6 +15,7 @@ public class Ghost {
     private Timer moveTimer;
     private int direction;
     public int targetX, targetY; //TEMP
+    private Rectangle ghostHitbox;
 
     public Ghost(String name, int x, int y, MazeTemplate mazeTemplate, Pacman pacman) {
         this.name = name;
@@ -35,9 +37,19 @@ public class Ghost {
                 //move();
             }
         }, 0, 16);  // Esegui il metodo move() ogni 100 millisecondi (puoi regolare l'intervallo)
+        this.ghostHitbox = new Rectangle(x,y,size,size);
     }
 
 
+    public void updateHitbox()
+    {
+        ghostHitbox.x = x;
+        ghostHitbox.y = y;
+    }
+    public Rectangle getGhostHitbox()
+    {
+        return ghostHitbox;
+    }
     public int getX() {
         return x;
     }
@@ -75,6 +87,7 @@ public class Ghost {
                 x ++;
                 break;
         }
+        updateHitbox();
         /*
         if (Math.abs(deltaX) >= Math.abs(deltaY) && isValidMove(x + moveX, y)) { // || x % 20 != 0) {
             x += moveX;
