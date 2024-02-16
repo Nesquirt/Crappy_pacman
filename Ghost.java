@@ -9,14 +9,9 @@ public class Ghost {
     private int size;
     private String name;
     private int speed;
-    private int direction;
     private Pacman pacman;
     private MazeTemplate mazeTemplate;
-    private Random random;
     private Timer moveTimer;
-    private long lastMoveTime = System.currentTimeMillis();
-    private int millisecondsPerMove = 16; // Regola questo valore per cambiare la velocità
-    private int newDirection;
 
     public Ghost(String name, int x, int y, MazeTemplate mazeTemplate, Pacman pacman) {
         this.name = name;
@@ -25,9 +20,7 @@ public class Ghost {
         this.size = 20;
         this.speed = 2;
         this.pacman = pacman;
-        this.direction = 0; // Inizia muovendosi verso l'alto
         this.mazeTemplate = mazeTemplate;
-        this.random = new Random();
 
         moveTimer = new Timer();
         moveTimer.scheduleAtFixedRate(new TimerTask() {

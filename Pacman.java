@@ -127,7 +127,7 @@ public class Pacman {
     }
 
     public void setDirection(int newDirection) {
-        if (newDirection >= 0 && newDirection <= 3 && x%20==0 && y%20==0){// && getX() % mazeTemplate.CELL == 0 && getY()% mazeTemplate.CELL == 0) {
+        if (newDirection >= 0 && newDirection <= 3 && x%20==0 && y%20==0){
             direction = newDirection;
         }
     }

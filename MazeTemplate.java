@@ -34,16 +34,6 @@ public class MazeTemplate {
         for (int i = 0; i < lines.size(); i++) {
             mazeData[i] = lines.get(i).toCharArray();
         }
-        /*
-        for(int i = 0; i<lines.size(); i++)
-        {
-            for(int j = 0; j < 46; j++)
-            {
-                System.out.print(mazeData[i][j]);
-            }
-            System.out.println();
-        }
-        */
     }
 
     private void initializePellets() {

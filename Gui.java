@@ -13,13 +13,10 @@ public class Gui extends JPanel implements ActionListener {
     private Pacman pacman;
     private MazeTemplate mazeTemplate;
     private int pacManSize;
-    private boolean[] keyStates;
     private Map<Integer, ImageIcon> pacManIcons;
     private Map<String, ImageIcon> ghostIcons;
     private Input input;
     private int timeElapsed;
-    private ImageIcon heartIcon;
-    private int heartSize;
     private boolean gameWon;
     private List<Ghost> ghosts;
 
@@ -27,7 +24,6 @@ public class Gui extends JPanel implements ActionListener {
         this.pacman = pacman;
         this.mazeTemplate = mazeTemplate;
         this.pacManSize = pacManSize;
-        this.keyStates = new boolean[4];
         this.pacManIcons = loadPacManIcons();
         this.ghostIcons = loadGhostIcons();
         this.input = input;
@@ -116,26 +112,8 @@ public class Gui extends JPanel implements ActionListener {
         ImageIcon pacManIcon = pacManIcons.get(pacManDirection);
         if (pacManIcon != null) {
             Image pacManImage = pacManIcon.getImage();
-            /*
-            int pacManSizeHalf = (int) Math.round(pacManSize) / 2;
-
-            int pacManXCentered = pacManX - pacManSizeHalf;
-            int pacManYCentered = pacManY - pacManSizeHalf;
-
-            if (pacManDirection == 2 || pacManDirection == 3) {
-                int cellY = pacManY / mazeTemplate.CELL;
-                pacManYCentered = cellY * mazeTemplate.CELL + mazeTemplate.CELL / 2 - pacManSizeHalf;
-            }
-
-            if (pacManDirection == 0 || pacManDirection == 1) {
-                int cellX = pacManX / mazeTemplate.CELL;
-                pacManXCentered = cellX * mazeTemplate.CELL + mazeTemplate.CELL / 2 - pacManSizeHalf;
-            }
-            */
             g.drawImage(pacManImage, pacManX, pacManY, (int) Math.round(pacManSize), (int) Math.round(pacManSize), this);
             }
-
-            //g.drawRect(pacman.getX(), pacman.getY(), pacManSize, pacManSize);
 
 
         for (Ghost ghost : ghosts) {

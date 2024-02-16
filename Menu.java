@@ -27,7 +27,7 @@ public class Menu extends JFrame {
 
         // Creazione del pannello per i pulsanti
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 50, 50)); // Allineamento centrale, spazio orizzontale di 50 pixel e spazio verticale di 20 pixel
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 50, 50)); // Allineamento centrale, spazio orizzontale  verticale
         buttonPanel.setBackground(Color.BLACK);
 
         // Caricamento delle immagini per i pulsanti
@@ -39,7 +39,6 @@ public class Menu extends JFrame {
         JButton startButton = new JButton();
         startButton.setIcon(startImageIcon);
         startButton.setPreferredSize(new Dimension(200, 60));
-        //startButton.setBorder(new RoundBorder(10));
         startButton.setFocusPainted(true);
         buttonPanel.add(startButton);
 
@@ -57,7 +56,6 @@ public class Menu extends JFrame {
         JButton leaderboardButton = new JButton();
         leaderboardButton.setIcon(leaderboardImageIcon);
         leaderboardButton.setPreferredSize(new Dimension(200, 60));
-        //leaderboardButton.setBorder(new RoundBorder(10));
         leaderboardButton.setFocusPainted(true);
         buttonPanel.add(leaderboardButton);
         leaderboardButton.addActionListener(new ActionListener()
@@ -75,7 +73,6 @@ public class Menu extends JFrame {
         JButton quitButton = new JButton();
         quitButton.setIcon(quitImageIcon);
         quitButton.setPreferredSize(new Dimension(200, 60));
-        //quitButton.setBorder(new RoundBorder(10));
         quitButton.setFocusPainted(true);
         buttonPanel.add(quitButton);
 
@@ -101,20 +98,4 @@ public class Menu extends JFrame {
         SwingUtilities.invokeLater(Menu::new);
     }
 
-    // Classe per definire un bordo arrotondato
-    static class RoundBorder extends AbstractBorder {
-        private final int radius;
-
-        RoundBorder(int radius) {
-            this.radius = radius;
-        }
-
-        @Override
-        public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
-            Graphics2D g2d = (Graphics2D) g.create();
-            g2d.setColor(c.getBackground());
-            g2d.draw(new RoundRectangle2D.Double(x, y, width - 1, height - 1, radius, radius));
-            g2d.dispose();
-        }
     }
-}
