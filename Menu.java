@@ -8,6 +8,7 @@ import java.awt.geom.RoundRectangle2D;
 public class Menu extends JFrame {
 
     public static scoreboard Scoreboard_frame;
+    public static Main main_frame;
     public Menu() {
         super("Pacman");
         setSize(920, 460);
@@ -42,6 +43,14 @@ public class Menu extends JFrame {
         startButton.setFocusPainted(true);
         buttonPanel.add(startButton);
 
+        startButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+                Main.main(new String[]{});
+                setVisible(false);
+            }
+        });
+
         // Pulsante Leaderboard
         Scoreboard_frame = new scoreboard(this);
 
@@ -69,6 +78,15 @@ public class Menu extends JFrame {
         //quitButton.setBorder(new RoundBorder(10));
         quitButton.setFocusPainted(true);
         buttonPanel.add(quitButton);
+
+        quitButton.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                System.exit(0);
+            }
+
+        });
 
         // Aggiunta del pannello dei pulsanti al pannello principale
         mainPanel.add(buttonPanel, BorderLayout.SOUTH);

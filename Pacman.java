@@ -14,8 +14,7 @@ public class Pacman {
     private MazeTemplate mazeTemplate;
     public int pacManSize;
     private int score;
-    private double speedMultiplier = 1; // Moltiplicatore di velocità iniziale
-    private boolean isGameOver;
+    private double speedMultiplier = 1.2; // Moltiplicatore di velocità iniziale
     private boolean isGameWon;
     public Rectangle pacManHitBox;
 
@@ -28,9 +27,7 @@ public class Pacman {
         this.mazeTemplate = mazeTemplate; // Inizializza il riferimento a MazeTemplate
         this.pacManSize = pacManSize; // Inizializza la dimensione di Pac-Man come double
         score = 0; // Inizializza il punteggio a 0
-        isGameOver = false; // Inizializza il flag del game over a false
-        isGameWon = false; // Inizializza il flag della vittoria a false
-
+        isGameWon = false;
         pacManHitBox = new Rectangle(x, y, pacManSize, pacManSize);
     }
 
@@ -80,14 +77,8 @@ public class Pacman {
 
             // Controlla se tutti i pellet sono stati mangiati
             if (mazeTemplate.getPellets().isEmpty() && mazeTemplate.getSpecialPellets().isEmpty()) {
-
-                    isGameOver = true;
+                isGameWon= true;
                 }
-            }
-
-            // Controlla se hai vinto
-            if (mazeTemplate.getPellets().isEmpty() && mazeTemplate.getSpecialPellets().isEmpty()) {
-                isGameWon = true;
             }
         }
 
@@ -182,56 +173,7 @@ public class Pacman {
             //stopMoving();
         }
     }
-    /*
-    private boolean canMoveUp() {
-        int cellX = x / mazeTemplate.CELL;
-        int cellY = y / mazeTemplate.CELL;
 
-        if (cellY > 0) {
-            char cellType = mazeTemplate.getMazeData()[cellY - 1][cellX];
-            return cellType != 'x' && cellType != 'v';
-        }
-
-        return false;
-    }
-
-    private boolean canMoveDown() {
-        int cellX = x / mazeTemplate.CELL;
-        int cellY = y / mazeTemplate.CELL;
-
-        if (cellY < mazeTemplate.getRowCount() - 1) {
-            char cellType = mazeTemplate.getMazeData()[cellY + 1][cellX];
-            return cellType != 'x' && cellType != 'v';
-        }
-
-        return false;
-    }
-
-    private boolean canMoveLeft() {
-        int cellX = x / mazeTemplate.CELL;
-        int cellY = y / mazeTemplate.CELL;
-
-        if (cellX > 0) {
-            char cellType = mazeTemplate.getMazeData()[cellY][cellX - 1];
-            return cellType != 'x' && cellType != 'h';
-        }
-
-        return false;
-    }
-
-    private boolean canMoveRight() {
-        int cellX = x / mazeTemplate.CELL;
-        int cellY = y / mazeTemplate.CELL;
-
-        if (cellX < mazeTemplate.getColumnCount() - 1) {
-            char cellType = mazeTemplate.getMazeData()[cellY][cellX + 1];
-            return cellType != 'x' && cellType != 'h';
-        }
-
-        return false;
-    }
-
-     */
 
     private void collectPellets(List<Pellet> pelletList) {
         Rectangle currentPellet;
@@ -267,11 +209,6 @@ public class Pacman {
 
     public int getScore() {
         return score;
-    }
-
-
-    public boolean isGameOver() {
-        return isGameOver;
     }
 
     public boolean isGameWon() {
