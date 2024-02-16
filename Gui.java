@@ -121,10 +121,15 @@ public class Gui extends JPanel implements ActionListener {
             ImageIcon ghostIcon = ghostIcons.get(ghostName);
             if (ghostIcon != null) {
                 Image ghostImage = ghostIcon.getImage();
-                int ghostX = (int) Math.round(ghost.getX());
-                int ghostY = (int) Math.round(ghost.getY());
-                int ghostSize = (int) Math.round(ghost.getSize());
+                int ghostX = ghost.getX();
+                int ghostY = ghost.getY();
+                int ghostSize = ghost.getSize();
+                if(ghostX % 20 == 0 && ghostY % 20 == 0)
+                    g.setColor(Color.GREEN);
+                else
+                    g.setColor(Color.RED);
                 g.drawRect(ghostX, ghostY, ghostSize, ghostSize);
+                g.drawRect(ghost.targetX, ghost.targetY, ghostSize, ghostSize);
                 g.drawImage(ghostImage, ghostX, ghostY, ghostSize, ghostSize, this);
             }
         }
