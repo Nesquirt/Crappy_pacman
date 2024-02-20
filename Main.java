@@ -46,8 +46,6 @@ public class Main {
     }
 }
 
-//TODO:Gestire logica fantasmi
-//TODO:Schermata di vittoria se si mangiano tutti i pallet, schermata di sconfitta se si perdono tutte le vite
 //NOTA: per far chiudere il frame di gioco al termine della partita, ho dovuto
 // trovare un modo di collegare il JFrame di gioco (creato e usato esclusivamente in questa classe)
 // alla condizione di vittoria (nella classe Gui); per farlo, ho deciso di passarlo alla classe scoreboard,

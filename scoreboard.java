@@ -97,7 +97,7 @@ public class scoreboard extends JFrame {
         }
     }
 
-    public void readFile()
+    public void readFile()  //lettura e scrittura da file Score.txt
     {
         try {
             BufferedReader reader = new BufferedReader(new FileReader("Score.txt"));
@@ -141,12 +141,3 @@ public class scoreboard extends JFrame {
 
 
 }
-
-
-/*
-Nota per Simo del futuro: readFile e writeFile vanno aggiunti al metodo gameover; oltre a ciò,
-readFile già viene chiamato all'avvio per inizializzare l'array di punteggi (e quindi mostrare
-i punteggi nella leaderboard prima di fare un gameover).
-NOTA: writeFile NON aggiunge elementi all'array; nella funzione di gameOver bisogna chiamare
-PRIMA writeFile(col nuovo punteggio) e POI readFile per ordinare l'array
- */

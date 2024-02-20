@@ -13,6 +13,8 @@ public class MazeTemplate {
     private List<Pellet> pellets; // Lista di tutti i pellet nel labirinto
     private List<Pellet> specialPellets; // Lista di tutti i pellet speciali nel labirinto
 
+    //-----------------------Lettura Labirinto da File-------------------------------------------//
+
     public MazeTemplate(String fileName) {
         readMazeDataFromFile(fileName);
         initializePellets();
@@ -36,7 +38,9 @@ public class MazeTemplate {
         }
     }
 
-    private void initializePellets() {
+    //--------------------------------------------------------------------------------//
+
+    private void initializePellets() {  //Inizializzazione pellet e special pellets, riferiti al mazetemplate da file rappresentati da "d" e "p"
         pellets = new ArrayList<>();
         specialPellets = new ArrayList<>();
 
@@ -91,7 +95,7 @@ public class MazeTemplate {
             }
         }
     }
-
+//----------------------Assegnazione lettere del mazetemplate al relativo utilizzo--------------------//
     private void drawCell(Graphics g, int row, int col, char cellType) {
         int x = col * CELL;
         int y = row * CELL;
@@ -142,6 +146,8 @@ public class MazeTemplate {
                 break;
         }
     }
+
+    //----------------------Assegnazione lettere del mazetemplate al relativo utilizzo--------------------//
 
     private void drawCorner(Graphics g, int xBase, int yBase) {
         Graphics2D g2 = (Graphics2D) g;

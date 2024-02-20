@@ -57,6 +57,8 @@ public class Gui extends JPanel implements ActionListener {
         timeTimer.start();
     }
 
+    //Caricamento GIF per Pacman e Ghost
+
     private Map<Integer, ImageIcon> loadPacManIcons() {
         Map<Integer, ImageIcon> icons = new HashMap<>();
         icons.put(0, new ImageIcon("images/up.gif"));
@@ -123,15 +125,17 @@ public class Gui extends JPanel implements ActionListener {
                 int ghostX = ghost.getX();
                 int ghostY = ghost.getY();
                 int ghostSize = ghost.getSize();
-                if(ghostX % 20 == 0 && ghostY % 20 == 0)
+                /*if(ghostX % 20 == 0 && ghostY % 20 == 0)
                     g.setColor(Color.GREEN);
                 else
                     g.setColor(Color.RED);
                 g.drawRect(ghostX, ghostY, ghostSize, ghostSize);
                 g.drawRect(ghost.targetX, ghost.targetY, ghostSize, ghostSize);
-                g.drawImage(ghostImage, ghostX, ghostY, ghostSize, ghostSize, this);
+                */g.drawImage(ghostImage, ghostX, ghostY, ghostSize, ghostSize, this);
             }
         }
+
+        //Schermata di gameover e inserimento nome per punteggio
 
         g.setColor(Color.WHITE);
         g.setFont(new Font("Arial", Font.PLAIN, 20));
@@ -146,17 +150,6 @@ public class Gui extends JPanel implements ActionListener {
             String name = javax.swing.JOptionPane.showInputDialog("Fine Partita! Inserisci il tuo nome: ");
             setVisible(false);
             scoreboard.writeFile(name, pacman.getScore());
-
-            //this.getRootPane().getParent().getParent().setVisible(true);
-            /*
-            g.setColor(Color.YELLOW);
-            g.setFont(new Font("Arial", Font.BOLD, 30));
-            String winMessage = "Hai vinto! Premi R per riprovare, Q per uscire.";
-            int messageWidth = g.getFontMetrics().stringWidth(winMessage);
-            int messageX = getWidth() / 2 - messageWidth / 2;
-            int messageY = getHeight() / 2;
-            g.drawString(winMessage, messageX, messageY);
-             */
         }
     }
 

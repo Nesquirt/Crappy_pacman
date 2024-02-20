@@ -67,7 +67,7 @@ public class Pacman {
 
             }
             else{
-                System.out.println("Trovato un muro");
+                //System.out.println("Trovato un muro");
                 stopMoving();
             }
 
@@ -80,7 +80,7 @@ public class Pacman {
             // Controlla se tutti i pellet sono stati mangiati
             if (mazeTemplate.getPellets().isEmpty() && mazeTemplate.getSpecialPellets().isEmpty()) {
                 isGameWon= true;
-                score += 1000;
+                score += 1500;
                 }
             }
 
@@ -138,7 +138,7 @@ public class Pacman {
         return false;
     }
 
-    public void setDirection(int newDirection) {
+    public void setDirection(int newDirection) {        //metodo per far muovere pacman di 20px in 20px per rimanere centrato
         if (newDirection >= 0 && newDirection <= 3 && x%20==0 && y%20==0){
             direction = newDirection;
         }
@@ -187,10 +187,6 @@ public class Pacman {
     }
 
 
-    private void ghostCollision()
-    {
-
-    }
     private void collectPellets(List<Pellet> pelletList) {
         Rectangle currentPellet;
         ListIterator<Pellet> iterator = pelletList.listIterator();
@@ -207,12 +203,12 @@ public class Pacman {
                 score += pelletValue;
                 if (pellet.isSpecial()) {
                     // Pac-Man ha mangiato un pellet speciale, aumenta la velocità per 5 secondi
-                    speedMultiplier = 2; // Moltiplicatore di velocità temporaneo
+                    speedMultiplier = 2.5; // Moltiplicatore di velocità temporaneo
                     Timer timer = new Timer(5000, new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             // Ripristina la velocità normale dopo 5 secondi
-                            speedMultiplier = 1;
+                            speedMultiplier = 1.2;
                         }
                     });
                     timer.setRepeats(false);

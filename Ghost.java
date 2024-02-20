@@ -17,7 +17,7 @@ public class Ghost {
     public int targetX, targetY; //TEMP
     private Rectangle ghostHitbox;
 
-    public Ghost(String name, int x, int y, MazeTemplate mazeTemplate, Pacman pacman) {
+    public Ghost(String name, int x, int y, MazeTemplate mazeTemplate, Pacman pacman) { //definizione classe ghost
         this.name = name;
         this.x = x;
         this.y = y;
@@ -66,8 +66,8 @@ public class Ghost {
         return name;
     }
 
-    public void move() {
-        targetX = findTarget()[0];
+    public void move() {                                                                                                //classe principale riferita al solo movimento
+        targetX = findTarget()[0];                                                                                      //dei fantasmi.
         targetY = findTarget()[1];
 
         direction = chooseDirection(targetX, targetY);
@@ -98,8 +98,8 @@ public class Ghost {
 
     }
 
-    private boolean isValidMove(int x, int y) {
-        int cellX = x / mazeTemplate.CELL;
+    private boolean isValidMove(int x, int y) {                                                                         //serie di controlli per non far uscire i
+        int cellX = x / mazeTemplate.CELL;                                                                              //fantasmi dai bordi del labirinto
         int cellY = y / mazeTemplate.CELL;
 
         if (cellX >= 0 && cellX < mazeTemplate.getColumnCount() && cellY >= 0 && cellY < mazeTemplate.getRowCount()) {
@@ -109,9 +109,9 @@ public class Ghost {
         return false;
     }
 
-    private int validDirections() {
-        int cellX = getX() / mazeTemplate.CELL;
-        int cellY = getY() / mazeTemplate.CELL;
+    private int validDirections() {                                                                                     //Verifica se è una direzione valida
+        int cellX = getX() / mazeTemplate.CELL;                                                                         //muovendosi di 20 px in 20px per rimanere
+        int cellY = getY() / mazeTemplate.CELL;                                                                         //centrato nelle celle del labirinto.
 
         int validDirections = 0;
         if (isValidMove(getX() + 20, getY()))
@@ -266,13 +266,13 @@ public class Ghost {
                 }
                 break;
 
-            case "Inky": //Fantasma blu -> non ho idea di come implementarlo per ora
+            case "Inky": //Fantasma blu -> Stessa logica del fantasma rosa ma punta nel lato opposto
                 switch(pacman.getDirection()) {
 
                     case 0:
                         targetCell[0] = pacman.getX();
-                        targetCell[1] = pacman.getY() + 60;
-                        break;
+                        targetCell[1] = pacman.getY() + 60;                                                             //+60 sarebbe i 20px di movimento moltiplicati
+                        break;                                                                                          //per il numero di celle di distanza da pacman.
                     case 1:
                         targetCell[0] = pacman.getX();
                         targetCell[1] = pacman.getY() - 60;
@@ -294,9 +294,9 @@ public class Ghost {
         }
         if(!isValidMove(targetCell[0], targetCell[1]))
         {
-            System.out.println("Target non valido: " + targetCell[0] + ", " + targetCell[1]);
-            targetCell[0] = pacman.getX();
-            targetCell[1] = pacman.getY();
+            //System.out.println("Target non valido: " + targetCell[0] + ", " + targetCell[1]);                           //se una mossa per qualsiasi motivo non è valida
+            targetCell[0] = pacman.getX();                                                                              //torna a rincorrere pacman direttamente,
+            targetCell[1] = pacman.getY();                                                                              //prendendo x e y come target principale.
         }
         return targetCell;
 
