@@ -102,6 +102,10 @@ public class scoreboard extends JFrame {
         try {
             BufferedReader reader = new BufferedReader(new FileReader("Score.txt"));
             String line;
+            for(int i = 0; i < topScores.length; i++)
+            {
+                topScores[i] = null;
+            }
             while((line = reader.readLine()) != null)
             {
                 Score newScore = new Score();
