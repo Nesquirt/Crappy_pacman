@@ -150,11 +150,15 @@ public class Gui extends JPanel implements ActionListener {
 
         if (pacman.isGameWon() && gameOverSequence == false) {
             gameOverSequence = true;
-            String name = javax.swing.JOptionPane.showInputDialog("Fine Partita! Inserisci il tuo nome: ");
+            String name = javax.swing.JOptionPane.showInputDialog(null, "Fine Partita! Inserisci il tuo nome: ");
             setVisible(false);
-            Scoreboard.writeFile(name, pacman.getScore());
+            if(name != null)
+            {
+                Scoreboard.writeFile(name, pacman.getScore());
+            }
             Scoreboard.readFile();
             Scoreboard.getScorePanel().repaint();
+
         }
     }
 

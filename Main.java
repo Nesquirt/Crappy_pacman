@@ -15,14 +15,16 @@ public class Main {
             List<Ghost> ghosts = new ArrayList<>();
 
             // Crea un'istanza di Pacman
-            Pacman pacman = new Pacman(40, 40, mazeTemplate, 20, ghosts); // Passa la dimensione di Pac-Man
+            Pacman pacman = new Pacman(430, 160, mazeTemplate, 20, ghosts); // Passa la dimensione di Pac-Man
 
             // Inizializza i fantasmi
-            ghosts.add(new Ghost("Inky", 280, 180, mazeTemplate, pacman));
-            ghosts.add(new Ghost("Blinky", 220, 340, mazeTemplate, pacman));
-            ghosts.add(new Ghost("Pinky", 360, 340, mazeTemplate, pacman));
-            ghosts.add(new Ghost("Clyde", 420, 380, mazeTemplate, pacman));
+            ghosts.add(new Ghost("Inky", 40, 40, mazeTemplate, pacman));
+            ghosts.add(new Ghost("Blinky", 620, 80, mazeTemplate, pacman));
+            ghosts.add(new Ghost("Pinky", 780, 380, mazeTemplate, pacman));
+            ghosts.add(new Ghost("Clyde", 380, 380, mazeTemplate, pacman));
 
+            Menu menu = new Menu();
+            menu.setVisible(false);
             // Crea un'istanza di Gui e aggiungi il labirinto, Pac-Man, la dimensione di Pac-Man, l'input e la lista di fantasmi
             Gui gui = new Gui(pacman, mazeTemplate, pacman.pacManSize, input, ghosts, Scoreboard);
 

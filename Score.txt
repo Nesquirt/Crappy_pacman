@@ -3,3 +3,9 @@ Matt 1430
 uouou 470
 try 2290
 null 500
+null 0
+ 160
+null 0
+null 0
+null 10
+ 0
