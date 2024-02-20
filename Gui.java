@@ -19,8 +19,9 @@ public class Gui extends JPanel implements ActionListener {
     private int timeElapsed;
     private List<Ghost> ghosts;
     private Boolean gameOverSequence;
+    private scoreboard Scoreboard;
 
-    public Gui(Pacman pacman, MazeTemplate mazeTemplate, int pacManSize, Input input, List<Ghost> ghosts) {
+    public Gui(Pacman pacman, MazeTemplate mazeTemplate, int pacManSize, Input input, List<Ghost> ghosts, scoreboard Scoreboard) {
         this.pacman = pacman;
         this.mazeTemplate = mazeTemplate;
         this.pacManSize = pacManSize;
@@ -30,6 +31,7 @@ public class Gui extends JPanel implements ActionListener {
         this.timeElapsed = 0;
         this.ghosts = ghosts;
         this.gameOverSequence = false;
+        this.Scoreboard = Scoreboard;
         setPreferredSize(new Dimension(920, 460));
         setFocusable(true);
         addKeyListener(new KeyAdapter() {
@@ -131,7 +133,8 @@ public class Gui extends JPanel implements ActionListener {
                     g.setColor(Color.RED);
                 g.drawRect(ghostX, ghostY, ghostSize, ghostSize);
                 g.drawRect(ghost.targetX, ghost.targetY, ghostSize, ghostSize);
-                */g.drawImage(ghostImage, ghostX, ghostY, ghostSize, ghostSize, this);
+                */
+                g.drawImage(ghostImage, ghostX, ghostY, ghostSize, ghostSize, this);
             }
         }
 
@@ -149,7 +152,9 @@ public class Gui extends JPanel implements ActionListener {
             gameOverSequence = true;
             String name = javax.swing.JOptionPane.showInputDialog("Fine Partita! Inserisci il tuo nome: ");
             setVisible(false);
-            scoreboard.writeFile(name, pacman.getScore());
+            Scoreboard.writeFile(name, pacman.getScore());
+            Scoreboard.readFile();
+            Scoreboard.getScorePanel().repaint();
         }
     }
 

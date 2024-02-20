@@ -1,9 +1,5 @@
-MAT 9960
-DAV 13
-FRA 12
-MEL 10
-yos 17
-eoe 87
-null 470
-null 200
-Test 890
+null 0
+Matt 1430
+uouou 470
+try 2290
+null 500

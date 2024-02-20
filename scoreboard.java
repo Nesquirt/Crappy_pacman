@@ -6,6 +6,7 @@ import java.io.*;
 import java.util.Arrays;
 
 public class scoreboard extends JFrame {
+    JPanel ScorePanel;
     JTextArea ScoreText;
     Score[] topScores;
     static JFrame gameFrame;
@@ -46,7 +47,7 @@ public class scoreboard extends JFrame {
         titlePanel.setLocation(0,0);
 
         //Area di testo dei punteggi
-        JPanel ScorePanel = new JPanel();
+        ScorePanel = new JPanel();
         ScorePanel.setSize(920, 300);
         ScorePanel.setBackground(Color.BLACK);
         ScoreText = new JTextArea();
@@ -99,13 +100,17 @@ public class scoreboard extends JFrame {
 
     public void readFile()  //lettura e scrittura da file Score.txt
     {
+        for(int i = 0; i < topScores.length; i++)
+        {
+            Score tmp = new Score();
+            tmp.score = 0;
+            tmp.name = "null";
+            topScores[i] = tmp;
+        }
         try {
             BufferedReader reader = new BufferedReader(new FileReader("Score.txt"));
             String line;
-            for(int i = 0; i < topScores.length; i++)
-            {
-                topScores[i] = null;
-            }
+
             while((line = reader.readLine()) != null)
             {
                 Score newScore = new Score();
@@ -118,12 +123,13 @@ public class scoreboard extends JFrame {
                     Arrays.sort(topScores);
                 }
             }
-
+            ScoreText.setText("");
             for(int i = topScores.length - 1; i >= 0; i--)
             {
                 String newText = ScoreText.getText() + "\n" + topScores[i].name + ": " + topScores[i].score;
                 ScoreText.setText(newText);
             }
+            ScorePanel.repaint();
 
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -131,7 +137,7 @@ public class scoreboard extends JFrame {
 
     }
 
-    public static void writeFile(String newName, int newScore)
+    public void writeFile(String newName, int newScore)
     {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("Score.txt", true))) {
             writer.write("\n" + newName + " " + newScore);
@@ -141,6 +147,11 @@ public class scoreboard extends JFrame {
         menu.setVisible(true);
         gameFrame.setVisible(false);
 
+    }
+
+    public JPanel getScorePanel()
+    {
+        return ScorePanel;
     }
 
 
