@@ -70,6 +70,20 @@ public class Ghost {
         targetX = findTarget()[0];                                                                                      //dei fantasmi.
         targetY = findTarget()[1];
 
+        int[] target = findTarget();
+        targetX = target[0];
+        targetY = target[1];
+
+       /* target=findTarget()[]{
+                if targetX = findTarget()[0];
+        }else{
+            targetY= findTarget()[1];
+        }
+
+        if(direction == y --){
+            System.out.println("nuova riga");
+        } */
+
         direction = chooseDirection(targetX, targetY);
 
         switch(direction)
@@ -122,7 +136,7 @@ public class Ghost {
             validDirections++;
         if (isValidMove(getX(), getY() - 20))
             validDirections++;
-        //System.out.println("Valid directions: " + validDirections);
+        System.out.println("Valid directions: " + validDirections);
         return validDirections;
     }
 
@@ -294,7 +308,7 @@ public class Ghost {
         }
         if(!isValidMove(targetCell[0], targetCell[1]))
         {
-            //System.out.println("Target non valido: " + targetCell[0] + ", " + targetCell[1]);                           //se una mossa per qualsiasi motivo non è valida
+            System.out.println("Target non valido: " + targetCell[0] + ", " + targetCell[1]);                           //se una mossa per qualsiasi motivo non è valida
             targetCell[0] = pacman.getX();                                                                              //torna a rincorrere pacman direttamente,
             targetCell[1] = pacman.getY();                                                                              //prendendo x e y come target principale.
         }

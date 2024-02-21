@@ -173,11 +173,6 @@ public class Gui extends JPanel implements ActionListener {
             }
 
             repaint();
-
-            if (pacman.isGameWon()) {
-                pacman.setGameWon(true);
-
-            }
         }
     }
 }
